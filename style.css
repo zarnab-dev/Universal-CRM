@@ -1,0 +1,489 @@
+/* ==========================================================================
+   DESIGN VARIABLES & SYSTEM INITIALIZATION
+   ========================================================================== */
+:root {
+    --bg-base: #f8fafc;
+    --bg-surface: #ffffff;
+    --border-color: #e2e8f0;
+    --text-primary: #0f172a;
+    --text-muted: #64748b;
+    
+    --brand-primary: #4f46e5;
+    --brand-primary-hover: #4338ca;
+    
+    --color-blue: #3b82f6;
+    --color-green: #10b981;
+    --color-purple: #8b5cf6;
+    --color-orange: #f59e0b;
+    
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    
+    --sidebar-width: 260px;
+    --transition-speed: 0.25s;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    overflow-x: hidden;
+}
+
+.hidden { display: none !important; }
+
+/* ==========================================================================
+   AUTHENTICATION VIEWS (LOGIN / FORGOT PASSWORD)
+   ========================================================================== */
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%);
+    padding: 20px;
+}
+
+.auth-card {
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 440px;
+    padding: 40px;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.auth-header .logo {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--brand-primary);
+    margin-bottom: 8px;
+}
+
+.auth-header p {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    transition: all var(--transition-speed);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.btn {
+    cursor: pointer;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-radius: var(--radius-sm);
+    border: none;
+    transition: background var(--transition-speed);
+    font-size: 14px;
+}
+
+.btn-primary {
+    background-color: var(--brand-primary);
+    color: white;
+}
+
+.btn-primary:hover { background-color: var(--brand-primary-hover); }
+.btn-block { width: 100%; }
+
+.auth-footer {
+    text-align: center;
+    margin-top: 24px;
+}
+
+.auth-footer a {
+    color: var(--brand-primary);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   MAIN DASHBOARD ARCHITECTURE FRAMEWORK
+   ========================================================================== */
+.dashboard-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Step 5: Sidebar Layout styling */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: #0f172a;
+    color: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    transition: transform var(--transition-speed);
+}
+
+.sidebar-brand {
+    padding: 24px;
+    font-size: 22px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ffffff;
+}
+
+.sidebar-menu {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 12px;
+    gap: 4px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-speed);
+}
+
+.menu-item:hover, .menu-item.active {
+    background-color: #1e293b;
+    color: #ffffff;
+}
+
+.menu-item.active {
+    background-color: var(--brand-primary);
+}
+
+.logout-btn:hover { background-color: #ef4444; }
+
+/* Workspace Framework Setup */
+.main-workspace {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    display: flex;
+    flex-direction: column;
+    min-width: 0; /* Clear grid layout blowout bugs */
+}
+
+/* Step 6: Top Navigation Styling */
+.top-nav {
+    height: 70px;
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    position: sticky;
+    top: 0;
+    z-index: 90;
+}
+
+.nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.mobile-toggle-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.search-box {
+    position: relative;
+}
+
+.search-box i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.search-box input {
+    padding: 10px 16px 10px 40px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-base);
+    font-size: 14px;
+    width: 280px;
+}
+
+.search-box input:focus { outline: none; border-color: var(--brand-primary); }
+
+.nav-icon-badge {
+    position: relative;
+    font-size: 20px;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.nav-icon-badge .badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background-color: #ef4444;
+    color: white;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.user-profile {
+    position: relative;
+    cursor: pointer;
+}
+
+.user-profile .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+}
+
+/* Profile Dropdown Component */
+.profile-dropdown {
+    position: absolute;
+    right: 0;
+    top: 52px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    width: 200px;
+    display: none;
+    flex-direction: column;
+    padding: 8px 0;
+}
+
+.profile-dropdown.show { display: flex; }
+
+.dropdown-header {
+    padding: 8px 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-header strong { font-size: 14px; color: var(--text-primary); }
+.dropdown-header span { font-size: 11px; color: var(--text-muted); }
+
+.profile-dropdown hr { border: 0; border-top: 1px solid var(--border-color); margin: 6px 0; }
+
+.profile-dropdown a {
+    padding: 10px 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-dropdown a:hover { background-color: var(--bg-base); color: var(--text-primary); }
+
+/* ==========================================================================
+   DASHBOARD MAIN INTERIOR WORKSPACE CONTENT
+   ========================================================================== */
+.dashboard-content {
+    padding: 32px;
+}
+
+.content-header { margin-bottom: 32px; }
+.content-header h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+.content-header p { color: var(--text-muted); }
+
+/* Universal Layout Card Wrapper template components */
+.card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+}
+
+/* Step 7: Statistic Cards Grid Structural Layout */
+.stat-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.stat-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.icon-blue { background-color: #eff6ff; color: var(--color-blue); }
+.icon-green { background-color: #ecfdf5; color: var(--color-green); }
+.icon-purple { background-color: #f5f3ff; color: var(--color-purple); }
+.icon-orange { background-color: #fffbeb; color: var(--color-orange); }
+
+.stat-info h3 { font-size: 24px; font-weight: 700; margin-bottom: 2px; }
+.stat-info p { color: var(--text-muted); font-size: 14px; font-weight: 500; }
+
+/* Visual Data Layer Analytics Layout Flexbox-Grid Breakouts */
+.dashboard-visuals-split {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+}
+
+/* Step 8: Chart Box UI */
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+}
+
+/* Step 9: Recent Activities Component Style blocks */
+.activity-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.activity-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.activity-marker {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+}
+
+.marker-green { background-color: var(--color-green); box-shadow: 0 0 0 4px #ecfdf5; }
+.marker-blue { background-color: var(--color-blue); box-shadow: 0 0 0 4px #eff6ff; }
+.marker-purple { background-color: var(--color-purple); box-shadow: 0 0 0 4px #f5f3ff; }
+.marker-orange { background-color: var(--color-orange); box-shadow: 0 0 0 4px #fffbeb; }
+
+.activity-details p { font-size: 14px; line-height: 1.4; color: #334155; }
+.activity-time { font-size: 11px; color: var(--text-muted); display: block; margin-top: 4px; }
+
+
+/* ==========================================================================
+   Step 10: RESPONSIVE MEDIA QUERIES EXECUTIONS
+   ========================================================================== */
+
+/* Tablet Optimization */
+@media (max-width: 1024px) {
+    .stat-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .dashboard-visuals-split {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Mobile Display View Optimization Breakpoint Layer */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.open {
+        transform: translateX(0);
+    }
+    
+    .main-workspace {
+        margin-left: 0;
+    }
+    
+    .mobile-toggle-btn {
+        display: block;
+    }
+    
+    .top-nav {
+        padding: 0 16px;
+    }
+    
+    .search-box input {
+        width: 160px;
+    }
+    
+    .dashboard-content {
+        padding: 20px;
+    }
+    
+    .stat-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
