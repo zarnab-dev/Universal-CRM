@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Universal CRM Dashboard - Enterprise Command Matrix</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- ==========================================
-       1. AUTHENTICATION VIEWS
-       ========================================== -->
     <div id="login-view" class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
@@ -30,788 +30,448 @@
                 <button type="submit" class="btn btn-primary btn-block">Login</button>
             </form>
             <div class="auth-footer">
-                <a href="#" onclick="navigateTo('forgot-view')">Forgot password?</a>
+                <p>Secured via Enterprise Cryptographic Gateway Node</p>
             </div>
         </div>
     </div>
 
-    <div id="forgot-view" class="auth-container hidden">
-        <div class="auth-card">
-            <div class="auth-header">
-                <div class="logo"><i class="fa-solid fa-layer-group"></i> NexusCRM</div>
-                <p>Reset your account access credentials.</p>
-            </div>
-            <form id="login-form">
-    <div class="form-group">
-        <label for="login-email">Email or Username</label>
-        <input type="text" id="login-email" placeholder="admin@nexus.com" required class="form-input-text">
-    </div>
-    <div class="form-group">
-        <label for="login-password">Password</label>
-        <input type="password" id="login-password" placeholder="••••••••" required class="form-input-text">
-    </div>
-    <button type="submit" class="btn btn-primary btn-block">Login</button>
-</form>
-            <div class="auth-footer">
-                <a href="#" onclick="navigateTo('login-view')">Return to Login Window</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==========================================
-       2. MAIN APPLICATION WORKSPACE VIEW
-       ========================================== -->
-    <div id="dashboard-view" class="dashboard-wrapper hidden">
+    <div id="dashboard-view" class="dashboard-wrapper" style="display: none;">
         
-        <!-- SIDEBAR NAVIGATION -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-brand">
-                <i class="fa-solid fa-layer-group"></i> <span>NexusCRM</span>
+        <aside class="sidebar-container" id="sidebar-panel">
+            <div class="sidebar-header">
+                <div class="logo"><i class="fa-solid fa-layer-group"></i> <span>NexusCRM</span></div>
+                <button class="sidebar-toggle-mobile" onclick="toggleMobileSidebar()" aria-label="Toggle Navigation">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
             </div>
-            <nav class="sidebar-menu">
-                <a href="#" class="menu-item active" data-target="panel-home" onclick="switchPanel('panel-home')"><i class="fa-solid fa-chart-pie"></i> <span>Dashboard</span></a>
-                
-                <div class="menu-group">
-                    <div class="menu-group-header"><i class="fa-solid fa-users"></i> <span>Customers</span></div>
-                    <div class="menu-group-items">
-                        <a href="#" class="menu-item sub-item" data-target="panel-customer-list" onclick="switchPanel('panel-customer-list')"><i class="fa-solid fa-list"></i> <span>Customer List</span></a>
-                        <a href="#" class="menu-item sub-item" data-target="panel-customer-add" onclick="switchPanel('panel-customer-add')"><i class="fa-solid fa-user-plus"></i> <span>Add Customer</span></a>
-                    </div>
+            
+            <div class="sidebar-profile-card">
+                <div class="profile-avatar-wrapper">
+                    <img id="sidebar-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80" alt="Profile Avatar" class="profile-img">
+                    <span class="status-indicator online"></span>
                 </div>
-
-                <div class="menu-group">
-                    <div class="menu-group-header"><i class="fa-solid fa-bullseye"></i> <span>Leads</span></div>
-                    <div class="menu-group-items">
-                        <a href="#" class="menu-item sub-item" data-target="panel-lead-list" onclick="switchPanel('panel-lead-list')"><i class="fa-solid fa-list"></i> <span>Lead Management</span></a>
-                    </div>
+                <div class="profile-info-block">
+                    <h4 id="sidebar-user-name">Zarnab Laeeq-ur-Rehman</h4>
+                    <p id="sidebar-user-role">Administrator</p>
                 </div>
+            </div>
 
-                <div class="menu-group">
-                    <div class="menu-group-header"><i class="fa-solid fa-user-tie"></i> <span>Employees</span></div>
-                    <div class="menu-group-items">
-                        <a href="#" class="menu-item sub-item" data-target="panel-employee-list" onclick="switchPanel('panel-employee-list')"><i class="fa-solid fa-id-badge"></i> <span>Employee List</span></a>
-                        <a href="#" class="menu-item sub-item" data-target="panel-employee-profile" onclick="switchPanel('panel-employee-profile')"><i class="fa-solid fa-id-card"></i> <span>Employee Profile</span></a>
-                    </div>
-                </div>
-
-                <div class="menu-group">
-                    <div class="menu-group-header"><i class="fa-solid fa-list-check"></i> <span>Tasks</span></div>
-                    <div class="menu-group-items">
-                        <a href="#" class="menu-item sub-item" data-target="panel-task-list" onclick="switchPanel('panel-task-list')"><i class="fa-solid fa-tasks"></i> <span>Task List</span></a>
-                        <a href="#" class="menu-item sub-item" data-target="panel-task-add" onclick="switchPanel('panel-task-add')"><i class="fa-solid fa-square-plus"></i> <span>Create Task</span></a>
-                    </div>
-                </div>
-
-                <div class="menu-group">
-                    <div class="menu-group-header"><i class="fa-solid fa-calendar-check"></i> <span>Operations & Scheduling</span></div>
-                    <div class="menu-group-items">
-                        <a href="#" class="menu-item sub-item" data-target="panel-meeting-scheduler" onclick="switchPanel('panel-meeting-scheduler')"><i class="fa-solid fa-handshake"></i> <span>Meeting Scheduler</span></a>
-                        <a href="#" class="menu-item sub-item" data-target="panel-calendar" onclick="switchPanel('panel-calendar')"><i class="fa-solid fa-calendar-days"></i> <span>Interactive Calendar</span></a>
-                        <a href="#" class="menu-item sub-item" data-target="panel-reports" onclick="switchPanel('panel-reports')"><i class="fa-solid fa-chart-column"></i> <span>Reports & Analytics</span></a>
-                    </div>
-                </div>
-
-                <div class="menu-group">
-                    <div class="menu-group-header"><i class="fa-solid fa-sliders"></i> <span>Identity & Settings</span></div>
-                    <div class="menu-group-items">
-                        <a href="#" class="menu-item sub-item" data-target="panel-user-profile" onclick="switchPanel('panel-user-profile')"><i class="fa-solid fa-circle-user"></i> <span>User Profile</span></a>
-                        <a href="#" class="menu-item sub-item" data-target="panel-account-settings" onclick="switchPanel('panel-account-settings')"><i class="fa-solid fa-user-gear"></i> <span>Account Settings</span></a>
-                        <a href="#" class="menu-item sub-item" data-target="panel-company-settings" onclick="switchPanel('panel-company-settings')"><i class="fa-solid fa-building-gear"></i> <span>Company Settings</span></a>
-                    </div>
-                </div>
-
-                <a href="#" class="menu-item" onclick="navigateTo('login-view')"><i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span></a>
+            <nav class="sidebar-nav-menu">
+                <button class="nav-item-btn active" data-panel="panel-home" onclick="switchPanel('panel-home')">
+                    <i class="fa-solid fa-chart-pie"></i> <span>Dashboard Matrix</span>
+                </button>
+                <button class="nav-item-btn" data-panel="panel-customers" onclick="switchPanel('panel-customers')">
+                    <i class="fa-solid fa-users"></i> <span>Customer Base</span>
+                </button>
+                <button class="nav-item-btn" data-panel="panel-employees" onclick="switchPanel('panel-employees')">
+                    <i class="fa-solid fa-id-card"></i> <span>Human Capital</span>
+                </button>
+                <button class="nav-item-btn" data-panel="panel-tasks" onclick="switchPanel('panel-tasks')">
+                    <i class="fa-solid fa-list-check"></i> <span>Task Operations</span>
+                </button>
+                <button class="nav-item-btn" data-panel="panel-calendar" onclick="switchPanel('panel-calendar')">
+                    <i class="fa-solid fa-calendar-days"></i> <span>Chronos Calendar</span>
+                </button>
+                <button class="nav-item-btn" data-panel="panel-reports" onclick="switchPanel('panel-reports')">
+                    <i class="fa-solid fa-chart-line"></i> <span>Telemetry Reports</span>
+                </button>
+                <button class="nav-item-btn" data-panel="panel-settings" onclick="switchPanel('panel-settings')">
+                    <i class="fa-solid fa-sliders"></i> <span>System Controls</span>
+                </button>
+                <button class="nav-item-btn" data-panel="panel-profile" onclick="switchPanel('panel-profile')">
+                    <i class="fa-solid fa-user-gear"></i> <span>Identity Ledger</span>
+                </button>
             </nav>
+
+            <div class="sidebar-footer-action">
+                <button class="btn btn-outline-danger btn-block" onclick="navigateTo('login-view')">
+                    <i class="fa-solid fa-power-off"></i> <span>Terminate Session</span>
+                </button>
+            </div>
         </aside>
 
-        <!-- MAIN CONTENT WORKSPACE -->
         <div class="main-workspace">
             
-            <!-- TOP NAVIGATION HEADER -->
-            <header class="top-nav">
-                <div class="nav-left">
-                    <button class="mobile-toggle-btn" id="mobile-toggle"><i class="fa-solid fa-bars"></i></button>
-                    <div class="search-box">
+            <header class="workspace-navbar">
+                <div class="navbar-left-cluster">
+                    <button class="sidebar-trigger-btn" onclick="toggleMobileSidebar()">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="search-bar-wrapper">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" placeholder="Search across core framework fields...">
+                        <input type="text" placeholder="Global pipeline querying..." aria-label="Global query filter">
                     </div>
                 </div>
-                <div class="nav-right">
-                    <div class="nav-icon-badge" onclick="toggleNotificationPanel(); event.stopPropagation();">
+                <div class="navbar-right-cluster">
+                    <button class="nav-action-icon-btn" onclick="toggleNotificationPanel()" aria-label="Notifications">
                         <i class="fa-solid fa-bell"></i>
-                        <span class="badge">3</span>
-                    </div>
-                    <div class="user-profile" id="profileDropdownBtn">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Admin Avatar" class="avatar">
-                        <div class="profile-dropdown" id="profileDropdown">
-                            <div class="dropdown-header">
-                                <strong>System Administrator</strong>
-                                <span>admin@nexus.com</span>
-                            </div>
-                            <hr>
-                            <a href="#" onclick="switchPanel('panel-user-profile')"><i class="fa-solid fa-user"></i> My Profile</a>
-                            <a href="#" onclick="switchPanel('panel-account-settings')"><i class="fa-solid fa-gear"></i> Settings</a>
-                            <hr>
-                            <a href="#" onclick="navigateTo('login-view')"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                        </div>
+                        <span class="badge-dot"></span>
+                    </button>
+                    <button class="nav-action-icon-btn" onclick="switchPanel('panel-settings')" aria-label="Settings">
+                        <i class="fa-solid fa-gear"></i>
+                    </button>
+                    <div class="vertical-divider"></div>
+                    <div class="navbar-user-tag" onclick="switchPanel('panel-profile')">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80" alt="Avatar Mini" id="navbar-avatar" class="avatar-mini">
+                        <span id="navbar-username-lbl">Zarnab L.</span>
                     </div>
                 </div>
             </header>
 
-            <!-- SWITCHABLE MAIN SUB-PANELS CONTAINER -->
-            <div class="workspace-panels">
-
-                <!-- MAIN DASHBOARD HUB PANEL -->
-                <main id="panel-home" class="dashboard-panel-content">
-                    <div class="content-header">
-                        <h1>Analytical Command Index</h1>
-                        <p>Enterprise health overview performance telemetries.</p>
-                    </div>
-
-                    <div class="stat-cards-grid">
-                        <div class="card stat-card">
-                            <div class="stat-icon icon-blue"><i class="fa-solid fa-wallet"></i></div>
-                            <div class="stat-info"><h3>$48,250</h3><p>ARR Growth Capital</p></div>
-                        </div>
-                        <div class="card stat-card">
-                            <div class="stat-icon icon-green"><i class="fa-solid fa-users"></i></div>
-                            <div class="stat-info"><h3>1,240</h3><p>Active Consumer Nodes</p></div>
-                        </div>
-                        <div class="card stat-card">
-                            <div class="stat-icon icon-purple"><i class="fa-solid fa-chart-line"></i></div>
-                            <div class="stat-info"><h3>+23.4%</h3><p>Conversion Velocity</p></div>
-                        </div>
-                        <div class="card stat-card">
-                            <div class="stat-icon icon-orange"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                            <div class="stat-info"><h3>4</h3><p>Pending Operational Sprints</p></div>
+            <main class="panel-content-viewport">
+                
+                <section id="panel-home" class="app-view-panel-container target-active-panel">
+                    <div class="panel-view-title-block">
+                        <div>
+                            <h1>Operational Matrix</h1>
+                            <p>Real-time analytics, client onboarding diagnostics, and pipeline activity indexes.</p>
                         </div>
                     </div>
 
-                    <div class="dashboard-visuals-split">
-                        <div class="card">
-                            <div class="card-title">Revenue Trajectory Timeline Map</div>
-                            <div class="chart-container">
+                    <div class="analytics-glance-grid">
+                        <div class="metric-card-node">
+                            <div class="metric-card-top">
+                                <div>
+                                    <p class="metric-label-tag">Active SLA Accounts</p>
+                                    <h2 class="metric-value-num" id="stat-customer-count">0</h2>
+                                </div>
+                                <div class="metric-icon-box m-blue"><i class="fa-solid fa-building-columns"></i></div>
+                            </div>
+                            <div class="metric-card-footer positive">
+                                <i class="fa-solid fa-arrow-trend-up"></i> <span>+14.2%</span> vs last deployment cycle
+                            </div>
+                        </div>
+                        <div class="metric-card-node">
+                            <div class="metric-card-top">
+                                <div>
+                                    <p class="metric-label-tag">Assigned Operators</p>
+                                    <h2 class="metric-value-num" id="stat-employee-count">0</h2>
+                                </div>
+                                <div class="metric-icon-box m-purple"><i class="fa-solid fa-network-wired"></i></div>
+                            </div>
+                            <div class="metric-card-footer positive">
+                                <i class="fa-solid fa-arrow-trend-up"></i> <span>Stable Allocation</span>
+                            </div>
+                        </div>
+                        <div class="metric-card-node">
+                            <div class="metric-card-top">
+                                <div>
+                                    <p class="metric-label-tag">Pending Task Backlog</p>
+                                    <h2 class="metric-value-num" id="stat-task-count">0</h2>
+                                </div>
+                                <div class="metric-icon-box m-orange"><i class="fa-solid fa-hourglass-half"></i></div>
+                            </div>
+                            <div class="metric-card-footer negative">
+                                <i class="fa-solid fa-circle-exclamation"></i> <span>Action Required</span>
+                            </div>
+                        </div>
+                        <div class="metric-card-node">
+                            <div class="metric-card-top">
+                                <div>
+                                    <p class="metric-label-tag">Active Schedule Nodes</p>
+                                    <h2 class="metric-value-num" id="stat-meeting-count">0</h2>
+                                </div>
+                                <div class="metric-icon-box m-green"><i class="fa-solid fa-satellite-dish"></i></div>
+                            </div>
+                            <div class="metric-card-footer positive">
+                                <i class="fa-solid fa-check"></i> <span>Synchronized</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="telemetry-chart-split-grid">
+                        <div class="chart-canvas-card">
+                            <div class="chart-header-row">
+                                <h3>Revenue Index Pipeline ($)</h3>
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </div>
+                            <div class="chart-frame-wrapper">
                                 <canvas id="revenueChart"></canvas>
                             </div>
                         </div>
-                        <div class="card">
-                            <div class="card-title">Recent Workspace Activities</div>
-                            <ul class="activity-list">
-                                <li class="activity-item">
-                                    <div class="activity-marker marker-green"></div>
-                                    <div class="activity-details">
-                                        <p>Database synchronization routine executed successfully.</p>
-                                        <span class="activity-time">Just Now</span>
-                                    </div>
-                                </li>
-                                <li class="activity-item">
-                                    <div class="activity-marker marker-blue"></div>
-                                    <div class="activity-details">
-                                        <p>Account contract tier verified by Sales Operations.</p>
-                                        <span class="activity-time">14 mins ago</span>
-                                    </div>
-                                </li>
-                            </ul>
+                    </div>
+                </section>
+
+                <section id="panel-customers" class="app-view-panel-container" style="display: none;">
+                    <div class="panel-view-title-block">
+                        <div>
+                            <h1>Enterprise Client Index</h1>
+                            <p>Manage, filter, and track active business relationships and operational SLA profiles.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="openAddCustomerModal()">
+                            <i class="fa-solid fa-plus"></i> Add Account Profile
+                        </button>
+                    </div>
+
+                    <div class="data-table-control-interface">
+                        <div class="search-bar-wrapper table-search-override">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="customer-search-input" onkeyup="filterCustomerTable()" placeholder="Filter via name, email, or operational tier...">
+                        </div>
+                        <div class="filter-actions-cluster">
+                            <select id="customer-segment-filter" onchange="filterCustomerTable()" class="select-input-native">
+                                <option value="">All Tiers & Segments</option>
+                                <option value="Enterprise SLA">Enterprise SLA</option>
+                                <option value="Mid-Market Growth">Mid-Market Growth</option>
+                                <option value="Startup Scale">Startup Scale</option>
+                            </select>
+                            <select id="customer-status-filter" onchange="filterCustomerTable()" class="select-input-native">
+                                <option value="">All Lifecycle Statuses</option>
+                                <option value="Active">Active</option>
+                                <option value="Suspended">Suspended</option>
+                                <option value="Under Review">Under Review</option>
+                            </select>
                         </div>
                     </div>
-                </main>
 
-                <!-- ==========================================
-                   DAY 5: USER PROFILE PANEL
-                   ========================================== -->
-                <main id="panel-user-profile" class="dashboard-panel-content hidden">
-                    <div class="content-header">
-                        <h1>User Profile Identity Context</h1>
-                        <p>Detailed performance matrices, system authorities, and deployment parameter logs.</p>
-                    </div>
-                    <div class="profile-split-architecture">
-                        <div class="card profile-left-bio-card">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Admin Avatar" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; margin-bottom: 16px; border: 2px solid var(--brand-primary, #4f46e5);">
-                            <h2>Zarnab Laeeq-ur-Rehman</h2>
-                            <p class="profile-role-tag">Root Management Layer</p>
-                            <span class="status-badge badge-active">Active Node</span>
-                            <hr class="profile-divider" style="margin: 20px 0; border: none; border-top: 1px solid var(--border-color, #e5e7eb);">
-                            <div class="bio-meta-list" style="display: flex; flex-direction: column; gap: 12px; font-size: 13px;">
-                                <div class="bio-meta-item"><i class="fa-solid fa-building" style="color:var(--brand-primary, #4f46e5); width:20px;"></i> <span>Global Operations</span></div>
-                                <div class="bio-meta-item"><i class="fa-solid fa-envelope" style="color:var(--brand-primary, #4f46e5); width:20px;"></i> <span>admin@nexus.com</span></div>
-                                <div class="bio-meta-item"><i class="fa-solid fa-phone" style="color:var(--brand-primary, #4f46e5); width:20px;"></i> <span>+92 (42) 3555-8910</span></div>
-                            </div>
-                            <div style="margin-top: 24px; display: flex; flex-direction: column; gap: 8px; width: 100%;">
-                                <button class="btn btn-primary btn-block" onclick="switchPanel('panel-account-settings')"><i class="fa-solid fa-user-pen"></i> Edit Profile</button>
-                                <button class="btn btn-secondary btn-block" onclick="switchPanel('panel-account-settings')"><i class="fa-solid fa-key"></i> Change Password</button>
-                            </div>
-                        </div>
-
-                        <div style="display: flex; flex-direction: column; gap: 24px;">
-                            <div class="card">
-                                <div class="card-title" style="margin-bottom: 14px;">Bio / Operational Mandate</div>
-                                <p style="font-size:14px; line-height: 1.6; color:var(--text-muted, #4b5563);">
-                                    Responsible for managing enterprise structural databases, overseeing global client onboarding pipelines, optimizing system telemetry routing, and provisioning cryptographic deployment validation gates.
-                                </p>
-                            </div>
-
-                            <div class="card">
-                                <div class="card-title" style="margin-bottom: 14px;">Assigned Framework Task Summary</div>
-                                <div class="progress-track-container" style="margin-bottom: 16px;">
-                                    <div class="progress-track-lbls" style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:13px;">
-                                        <span>Production Architecture Sync</span><strong>80% Completed</strong>
-                                    </div>
-                                    <div class="progress-rail" style="background:#e5e7eb; height:6px; border-radius:4px; overflow:hidden;">
-                                        <div class="progress-fill" style="width: 80%; background:#4f46e5; height:100%;"></div>
-                                    </div>
-                                </div>
-                                <div class="progress-track-container">
-                                    <div class="progress-track-lbls" style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:13px;">
-                                        <span>Database Shard Ledger Realignment</span><strong>45% Completed</strong>
-                                    </div>
-                                    <div class="progress-rail" style="background:#e5e7eb; height:6px; border-radius:4px; overflow:hidden;">
-                                        <div class="progress-fill" style="width: 45%; background:#7c3aed; height:100%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card">
-                                <div class="card-title" style="margin-bottom: 14px;">Recent Administrative Footprints</div>
-                                <ul class="activity-list" style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 14px;">
-                                    <li class="activity-item" style="display: flex; gap: 12px; align-items: flex-start;">
-                                        <div class="activity-marker marker-blue" style="width: 8px; height: 8px; border-radius: 50%; background: #0284c7; margin-top: 6px; flex-shrink: 0;"></div>
-                                        <div class="activity-details">
-                                            <p style="font-size: 13px; margin: 0;">Modified structural deployment policies for global customer node registries.</p>
-                                            <span class="activity-time" style="font-size: 11px; color: var(--text-muted, #6b7280);">2 hours ago</span>
-                                        </div>
-                                    </li>
-                                    <li class="activity-item" style="display: flex; gap: 12px; align-items: flex-start;">
-                                        <div class="activity-marker marker-green" style="width: 8px; height: 8px; border-radius: 50%; background: #16a34a; margin-top: 6px; flex-shrink: 0;"></div>
-                                        <div class="activity-details">
-                                            <p style="font-size: 13px; margin: 0;">Authenticated session keys for secure Operations Matrix sync.</p>
-                                            <span class="activity-time" style="font-size: 11px; color: var(--text-muted, #6b7280);">Yesterday</span>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-
-                <!-- ==========================================
-                   DAY 5: ACCOUNT SETTINGS PANEL
-                   ========================================== -->
-                <main id="panel-account-settings" class="dashboard-panel-content hidden">
-                    <div class="content-header">
-                        <h1>Identity Account Configurations</h1>
-                        <p>Modify structural security preferences, notification routing protocols, and primary context elements.</p>
-                    </div>
-                    <div class="card form-max-bounds" style="max-width: 800px; margin: 0 auto;">
-                        <form onsubmit="event.preventDefault(); alert('Identity profile configurations committed successfully.'); switchPanel('panel-user-profile');">
-                            
-                            <!-- Profile Parameters Sub-Section -->
-                            <div style="margin-bottom: 28px;">
-                                <h3 style="font-size: 15px; font-weight: 700; border-bottom: 1px solid var(--border-color, #e5e7eb); padding-bottom: 8px; margin-bottom: 16px; color: var(--brand-primary, #4f46e5);"><i class="fa-solid fa-user-gear"></i> Profile Core Elements</h3>
-                                <div class="form-grid-layout" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
-                                    <div class="form-group"><label class="required-field-lbl">Full Identity Name</label><input type="text" class="form-input-text" value="Zarnab Laeeq-ur-Rehman" required></div>
-                                    <div class="form-group"><label class="required-field-lbl">Primary Notification Target Email</label><input type="email" class="form-input-text" value="admin@nexus.com" required></div>
-                                    <div class="form-group"><label>Secure Phone Line</label><input type="text" class="form-input-text" value="+92 (42) 3555-8910"></div>
-                                </div>
-                            </div>
-
-                            <!-- Password Parameters Sub-Section -->
-                            <div style="margin-bottom: 28px;">
-                                <h3 style="font-size: 15px; font-weight: 700; border-bottom: 1px solid var(--border-color, #e5e7eb); padding-bottom: 8px; margin-bottom: 16px; color: var(--brand-primary, #4f46e5);"><i class="fa-solid fa-shield-halved"></i> Access Vector Cryptography</h3>
-                                <div class="form-grid-layout" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
-                                    <div class="form-group"><label>Current Security Token</label><input type="password" class="form-input-text" placeholder="••••••••"></div>
-                                    <div class="form-group"><label>New Access Key Matrix</label><input type="password" class="form-input-text" placeholder="••••••••"></div>
-                                    <div class="form-group"><label>Confirm Access Key Matrix</label><input type="password" class="form-input-text" placeholder="••••••••"></div>
-                                </div>
-                            </div>
-
-                            <!-- Notification Routing Preferences -->
-                            <div style="margin-bottom: 24px;">
-                                <h3 style="font-size: 15px; font-weight: 700; border-bottom: 1px solid var(--border-color, #e5e7eb); padding-bottom: 8px; margin-bottom: 16px; color: var(--brand-primary, #4f46e5);"><i class="fa-solid fa-bell-concierge"></i> Notification Signal Routing</h3>
-                                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
-                                    <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; cursor: pointer;">
-                                        <input type="checkbox" checked style="accent-color: var(--brand-primary, #4f46e5); width: 16px; height: 16px;"> Dispatch Critical System Emails
-                                    </label>
-                                    <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; cursor: pointer;">
-                                        <input type="checkbox" checked style="accent-color: var(--brand-primary, #4f46e5); width: 16px; height: 16px;"> Broadcast Interactive Push Telemetries
-                                    </label>
-                                    <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; cursor: pointer;">
-                                        <input type="checkbox" style="accent-color: var(--brand-primary, #4f46e5); width: 16px; height: 16px;"> Periodic Task Synchronization Alerts
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="form-button-dock" style="margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border-color, #e5e7eb); display: flex; justify-content: flex-end; gap: 12px;">
-                                <button type="button" class="btn btn-secondary" onclick="switchPanel('panel-user-profile')">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Save Changes</button>
-                            </div>
-                        </form>
-                    </div>
-                </main>
-
-                <!-- ==========================================
-                   DAY 5: COMPANY SETTINGS PANEL
-                   ========================================== -->
-                <main id="panel-company-settings" class="dashboard-panel-content hidden">
-                    <div class="content-header">
-                        <h1>Enterprise Framework Architecture</h1>
-                        <p>Configure company metadata settings, structural time zone offsets, and standard tracking currencies.</p>
-                    </div>
-                    <div class="card form-max-bounds" style="max-width: 800px; margin: 0 auto;">
-                        <form onsubmit="event.preventDefault(); alert('Global enterprise parameters verified and written to registry.'); switchPanel('panel-home');">
-                            
-                            <!-- Identity / Logo Segment -->
-                            <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 24px; background: rgba(79,70,229,0.03); padding: 16px; border-radius: var(--radius-md, 8px); border: 1px dashed var(--border-color, #e5e7eb);">
-                                <div style="width: 64px; height: 64px; background: var(--brand-primary, #4f46e5); color: #fff; border-radius: var(--radius-md, 8px); display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800;">
-                                    <i class="fa-solid fa-layer-group"></i>
-                                </div>
-                                <div>
-                                    <h4 style="font-size: 14px; font-weight: 700; margin: 0 0 4px 0;">Corporate Identity Brand Node</h4>
-                                    <p style="font-size: 12px; color: var(--text-muted, #6b7280); margin: 0 0 8px 0;">Inject an updated enterprise verification logo layout.</p>
-                                    <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 12px;" onclick="alert('File tracking framework initialized.');"><i class="fa-solid fa-upload"></i> Transmit Asset</button>
-                                </div>
-                            </div>
-
-                            <div class="form-grid-layout" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
-                                <div class="form-group"><label class="required-field-lbl">Enterprise Corporate Title</label><input type="text" class="form-input-text" value="NexusCRM Global Networks" required></div>
-                                <div class="form-group"><label class="required-field-lbl">Corporate Operations Email</label><input type="email" class="form-input-text" value="ops@nexus.com" required></div>
-                                <div class="form-group"><label class="required-field-lbl">System Support Line</label><input type="text" class="form-input-text" value="+1 (555) 019-2831" required></div>
-                                <div class="form-group"><label>Operational Web Endpoint</label><input type="url" class="form-input-text" value="https://nexus-matrix.io"></div>
-                            </div>
-
-                            <div class="form-group" style="margin-top: 16px;">
-                                <label class="required-field-lbl">Physical Headquarters Address Location</label>
-                                <input type="text" class="form-input-text" value="Suite 404, Tech Logistics Corridor, Layer 1 Engine Hub" required>
-                            </div>
-
-                            <div class="form-grid-layout" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px;">
-                                <div class="form-group">
-                                    <label class="required-field-lbl">Time Zone Offset Map</label>
-                                    <select class="form-select-control" style="width: 100%;">
-                                        <option selected>Pakistan Standard Time (PKT) - UTC+5</option>
-                                        <option>Coordinated Universal Time (UTC) - GMT</option>
-                                        <option>Eastern Standard Time (EST) - UTC-5</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label class="required-field-lbl">Standard Tracking Currency</label>
-                                    <select class="form-select-control" style="width: 100%;">
-                                        <option selected>PKR (Rs) - Pakistani Rupee</option>
-                                        <option>USD ($) - United States Dollar</option>
-                                        <option>EUR (€) - Euro Ledger</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label class="required-field-lbl">Core Localized Language</label>
-                                    <select class="form-select-control" style="width: 100%;">
-                                        <option selected>English (Global Architecture)</option>
-                                        <option>Urdu (Localized Sub-tier)</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-button-dock" style="margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border-color, #e5e7eb); display: flex; justify-content: flex-end; gap: 12px;">
-                                <button type="button" class="btn btn-secondary" onclick="switchPanel('panel-home')">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Save Settings</button>
-                            </div>
-                        </form>
-                    </div>
-                </main>
-
-                <!-- CUSTOMER LIST PANEL -->
-                <main id="panel-customer-list" class="dashboard-panel-content hidden">
-                    <div class="content-header">
-                        <h1>Enterprise Accounts Ledger</h1>
-                        <p>Track customer records, parameters, and historical billing profiles.</p>
-                    </div>
-                    <div class="card table-card-wrapper">
-                        <div class="table-actions-toolbar">
-                            <div class="search-box inner-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Search accounts..."></div>
-                            <div class="filter-actions">
-                                <select class="form-select-control"><option value="">All Status Layers</option><option value="active">Active System Accounts</option></select>
-                                <button class="btn btn-primary" onclick="switchPanel('panel-customer-add')"><i class="fa-solid fa-plus"></i> Add Account</button>
-                            </div>
-                        </div>
-                        <div class="responsive-table-scroll">
-                            <table class="crm-data-table">
-                                <thead>
-                                    <tr><th>Client Profile</th><th>Status</th><th>Corporate Segment</th><th class="text-right">Actions</th></tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="table-user-cell">
-                                                <div class="avatar-cell-mini">AA</div>
-                                                <div><strong>Acme Analytics Corp</strong><div class="table-subtext-email">billing@acme.io</div></div>
-                                            </div>
-                                        </td>
-                                        <td><span class="status-badge badge-active">Active</span></td>
-                                        <td><span class="source-tag">Enterprise SLA</span></td>
-                                        <td class="text-right">
-                                            <div class="table-action-group">
-                                                <button class="btn-icon btn-action-view" onclick="switchPanel('panel-customer-profile')"><i class="fa-solid fa-eye"></i></button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                    <div class="data-table-scroll-container">
+                        <table class="enterprise-data-table" id="customer-matrix-table">
+                            <thead>
+                                <tr>
+                                    <th>Corporate Entity</th>
+                                    <th>Security Contact Email</th>
+                                    <th>Market Segment</th>
+                                    <th>System Node Status</th>
+                                    <th style="text-align: right;">Action Triggers</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customer-rows-target">
                                 </tbody>
-                            </table>
-                        </div>
+                        </table>
                     </div>
-                </main>
+                </section>
 
-                <!-- ADD CUSTOMER PANEL -->
-                <main id="panel-customer-add" class="dashboard-panel-content hidden">
-                    <div class="content-header">
-                        <h1>Register Corporate Entity</h1>
-                        <p>Inject new consumer nodes into the centralized accounts database ledger.</p>
+                <section id="panel-employees" class="app-view-panel-container" style="display: none;">
+                    <div class="panel-view-title-block">
+                        <div>
+                            <h1>Human Capital Registry</h1>
+                            <p>Operational roles, internal communication coordinates, and validation permissions.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="openAddEmployeeModal()">
+                            <i class="fa-solid fa-user-plus"></i> Onboard New Operator
+                        </button>
                     </div>
-                    <div class="card form-max-bounds">
-                        <form onsubmit="event.preventDefault(); alert('Account node successfully injected!'); switchPanel('panel-customer-list');">
-                            <div class="form-grid-layout">
-                                <div class="form-group"><label class="required-field-lbl">Company / Entity Title</label><input type="text" class="form-input-text" placeholder="Acme Ltd" required></div>
-                                <div class="form-group"><label class="required-field-lbl">Primary Contact Email</label><input type="email" class="form-input-text" placeholder="ops@acme.io" required></div>
-                            </div>
-                            <div class="form-button-dock">
-                                <button type="button" class="btn btn-secondary" onclick="switchPanel('panel-customer-list')">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Initialize Node</button>
-                            </div>
-                        </form>
-                    </div>
-                </main>
 
-                <!-- CUSTOMER PROFILE PANEL -->
-                <main id="panel-customer-profile" class="dashboard-panel-content hidden">
-                    <div class="content-header">
-                        <h1>Client Matrix Profile</h1>
-                        <p>Analytical index mappings for individual consumers.</p>
-                    </div>
-                    <div class="profile-split-architecture">
-                        <div class="card profile-left-bio-card">
-                            <div class="profile-avatar-large">AA</div>
-                            <h2>Acme Analytics Corp</h2>
-                            <p class="profile-role-tag">Enterprise Account Stack</p>
-                        </div>
-                        <div class="card">
-                            <div class="card-title">Client Log Metadata</div>
-                            <p style="font-size:14px; color:var(--text-muted);">Account initialized smoothly. All SLAs verified active with no compliance alerts on current pipelines.</p>
-                        </div>
-                    </div>
-                </main>
-
-                <!-- LEADS MANAGEMENT PANEL -->
-                <main id="panel-lead-list" class="dashboard-panel-content hidden">
-                    <div class="content-header">
-                        <h1>Sales Pipeline Funnel</h1>
-                        <p>Audit incoming traffic channels and lead tracking matrices.</p>
-                    </div>
-                    <div class="card table-card-wrapper">
-                        <div class="table-actions-toolbar">
-                            <div class="search-box inner-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Search leads..."></div>
-                        </div>
-                        <div class="responsive-table-scroll">
-                            <table class="crm-data-table">
-                                <thead><tr><th>Prospect</th><th>Funnel Stage</th><th>Source Channel</th></tr></thead>
-                                <tbody>
-                                    <tr>
-                                        <td><strong>Devon Lane</strong><div class="table-subtext-email">devon@lane.com</div></td>
-                                        <td><span class="status-badge badge-lead-new">New Prospect</span></td>
-                                        <td><span class="source-tag">Inbound API</span></td>
-                                    </tr>
+                    <div class="data-table-scroll-container">
+                        <table class="enterprise-data-table" id="employee-matrix-table">
+                            <thead>
+                                <tr>
+                                    <th>Operator Identity</th>
+                                    <th>System Assignment</th>
+                                    <th>Department Unit</th>
+                                    <th>Secure Messaging Path</th>
+                                    <th>Hotline Vector</th>
+                                    <th style="text-align: right;">Action Triggers</th>
+                                </tr>
+                            </thead>
+                            <tbody id="employee-rows-target">
                                 </tbody>
-                            </table>
-                        </div>
+                        </table>
                     </div>
-                </main>
+                </section>
 
-                <!-- EMPLOYEE DIRECTORY PANEL -->
-                <main id="panel-employee-list" class="dashboard-panel-content hidden">
-                    <div class="content-header">
-                        <h1>Employee Directory</h1>
-                        <p>Manage internal human resource data, allocations, and operations.</p>
-                    </div>
-                    <div class="card table-card-wrapper" style="border: none; background: transparent; box-shadow: none;">
-                        <div class="table-actions-toolbar" style="border: 1px solid var(--border-color); border-radius: var(--radius-md); margin-bottom: 24px;">
-                            <div class="search-box inner-search">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                <input type="text" placeholder="Search operations staff...">
-                            </div>
-                            <div class="filter-actions">
-                                <select class="form-select-control">
-                                    <option value="">All Departments</option>
-                                    <option value="eng">Engineering</option>
-                                    <option value="ops">Operations</option>
-                                </select>
-                            </div>
+                <section id="panel-tasks" class="app-view-panel-container" style="display: none;">
+                    <div class="panel-view-title-block">
+                        <div>
+                            <h1>Task Operations</h1>
+                            <p>Mission critical milestones, structural database maintenance, and validation pipelines.</p>
                         </div>
-                        <div class="employee-grid-layout">
-                            <!-- EXISTING EMPLOYEE: SARAH JENKINS -->
-                            <div class="card employee-card">
-                                <span class="status-badge badge-active" style="position: absolute; top: 16px; right: 16px;">Active</span>
-                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80" alt="Avatar" class="avatar-large">
-                                <h3>Sarah Jenkins</h3>
-                                <p class="designation-lbl">Lead Cloud Engineer</p>
-                                <p class="dept-lbl">Engineering Department</p>
-                                <div class="employee-contact-stack">
-                                    <p><i class="fa-solid fa-envelope"></i> s.jenkins@nexus.com</p>
-                                    <p><i class="fa-solid fa-phone"></i> +1 (555) 391-4402</p>
-                                </div>
-                                <div class="table-action-group" style="width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-                                    <button class="btn btn-secondary" onclick="switchPanel('panel-employee-profile')" style="padding: 8px;"><i class="fa-solid fa-eye"></i> View</button>
-                                    <button class="btn btn-secondary" style="padding: 8px;"><i class="fa-solid fa-pen"></i> Edit</button>
-                                    <button class="btn btn-secondary" style="padding: 8px; color: #ef4444;"><i class="fa-solid fa-trash"></i></button>
-                                </div>
-                            </div>
+                        <button class="btn btn-primary" onclick="openAddTaskModal()">
+                            <i class="fa-solid fa-circle-plus"></i> Launch Operation Ticket
+                        </button>
+                    </div>
 
-                            <!-- NEW EMPLOYEE: MARCUS VANCE -->
-                            <div class="card employee-card">
-                                <span class="status-badge badge-active" style="position: absolute; top: 16px; right: 16px;">Active</span>
-                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80" alt="Marcus Vance Avatar" class="avatar-large">
-                                <h3>Marcus Vance</h3>
-                                <p class="designation-lbl">Core Operations Manager</p>
-                                <p class="dept-lbl">Operations Department</p>
-                                <div class="employee-contact-stack">
-                                    <p><i class="fa-solid fa-envelope"></i> m.vance@nexus.com</p>
-                                    <p><i class="fa-solid fa-phone"></i> +1 (555) 204-8931</p>
-                                </div>
-                                <div class="table-action-group" style="width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-                                    <button class="btn btn-secondary" onclick="switchPanel('panel-employee-profile')" style="padding: 8px;"><i class="fa-solid fa-eye"></i> View</button>
-                                    <button class="btn btn-secondary" style="padding: 8px;"><i class="fa-solid fa-pen"></i> Edit</button>
-                                    <button class="btn btn-secondary" style="padding: 8px; color: #ef4444;"><i class="fa-solid fa-trash"></i></button>
-                                </div>
-                            </div>
+                    <div class="kanban-task-matrix-grid" id="task-cards-target">
                         </div>
-                    </div>
-                </main>
+                </section>
 
-                <!-- EMPLOYEE PROFILE PANEL -->
-                <main id="panel-employee-profile" class="dashboard-panel-content hidden">
-                    <div class="content-header">
-                        <h1>Staff Profile Context Matrix</h1>
-                        <p>Detailed performance index metrics, allocations, and telemetry parameters.</p>
-                    </div>
-                    <div class="profile-split-architecture">
-                        <div class="card profile-left-bio-card">
-                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80" alt="Avatar" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 16px; border: 2px solid var(--brand-primary, #4f46e5);">
-                            <h2>Sarah Jenkins</h2>
-                            <p class="profile-role-tag">Lead Cloud Engineer</p>
-                            <span class="status-badge badge-active">Engineering Division</span>
-                            <hr class="profile-divider" style="margin: 16px 0; border: none; border-top: 1px solid var(--border-color);">
-                            <div class="bio-meta-list" style="display: flex; flex-direction: column; gap: 10px; font-size: 13px;">
-                                <div class="bio-meta-item"><i class="fa-solid fa-calendar-days"></i> <span>Joined March 14, 2024</span></div>
-                                <div class="bio-meta-item"><i class="fa-solid fa-envelope"></i> <span>s.jenkins@nexus.com</span></div>
-                            </div>
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 24px;">
-                            <div class="card">
-                                <div class="card-title">Performance Index Tracking Metrics</div>
-                                <div class="progress-track-container">
-                                    <div class="progress-track-lbls"><span>Sprint Velocity Execution</span><span>94%</span></div>
-                                    <div class="progress-rail"><div class="progress-fill" style="width: 94%;"></div></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-
-                <!-- OPERATIONAL TASK PIPELINE PANEL -->
-                <main id="panel-task-list" class="dashboard-panel-content hidden">
-                    <div class="content-header">
-                        <h1>Operational Task Pipeline</h1>
-                        <p>Track sprints, manage action nodes, and maintain production efficiency parameters.</p>
-                    </div>
-                    <div class="card table-card-wrapper" style="border: none; background: transparent; box-shadow: none;">
-                        <div class="table-actions-toolbar" style="border: 1px solid var(--border-color); border-radius: var(--radius-md); margin-bottom: 24px;">
-                            <div class="search-box inner-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Filter tasks..."></div>
-                            <div class="filter-actions">
-                                <button class="btn btn-primary" onclick="switchPanel('panel-task-add')"><i class="fa-solid fa-plus"></i> Create Task</button>
-                            </div>
-                        </div>
-                        <div class="tasks-grid-layout">
-                            <div class="card task-card">
-                                <div style="display: flex; flex-direction: column; gap: 12px;">
-                                    <div class="task-card-header">
-                                        <h3>Migrate Legacy Elastic Cluster Layers</h3>
-                                        <span class="status-badge badge-priority-high">High</span>
-                                    </div>
-                                    <p class="task-desc">Relocate database indexing shards into the unified production architecture framework.</p>
-                                    <div class="progress-track-container">
-                                        <div class="progress-track-lbls"><span style="color:var(--text-muted); font-size:11px;">Task Progress</span><span style="font-size:11px;">65%</span></div>
-                                        <div class="progress-rail"><div class="progress-fill" style="width: 65%;"></div></div>
+                <section id="panel-calendar" class="app-view-panel-container" style="display: none;">
+                    <div class="calendar-split-layout-engine">
+                        
+                        <div class="calendar-grid-card-workspace">
+                            <div class="calendar-control-action-bar">
+                                <div class="calendar-nav-left">
+                                    <h2 id="calendar-month-year-label" class="calendar-main-header">October 2026</h2>
+                                    <div class="calendar-btn-group">
+                                        <button class="btn btn-icon-only" onclick="shiftCalendarMonth(-1)" aria-label="Previous Month"><i class="fa-solid fa-chevron-left"></i></button>
+                                        <button class="btn btn-secondary-compact" onclick="resetCalendarToCurrent()">Today</button>
+                                        <button class="btn btn-icon-only" onclick="shiftCalendarMonth(1)" aria-label="Next Month"><i class="fa-solid fa-chevron-right"></i></button>
                                     </div>
                                 </div>
-                                <div class="task-card-footer">
-                                    <div class="task-meta-assignee">
-                                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=50&auto=format&fit=crop&q=80" alt="Sarah">
-                                        <span>Sarah Jenkins</span>
+                            </div>
+
+                            <div class="calendar-matrix-mesh-wrapper">
+                                <div class="calendar-weekday-header-strip">
+                                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                                </div>
+                                <div class="calendar-days-grid-mesh" id="calendar-days-grid-target">
                                     </div>
-                                    <span class="task-due-date"><i class="fa-solid fa-calendar"></i> July 12, 2026</span>
-                                </div>
                             </div>
                         </div>
-                    </div>
-                </main>
 
-                <!-- TASK NODE INITIALIZATION PANEL -->
-                <main id="panel-task-add" class="dashboard-panel-content hidden">
-                    <div class="content-header">
-                        <h1>Initialize Production Task Node</h1>
-                        <p>Construct structured operational mandates inside the global action layer framework.</p>
-                    </div>
-                    <div class="card form-max-bounds">
-                        <form onsubmit="event.preventDefault(); alert('Task framework added successfully!'); switchPanel('panel-task-list');">
-                            <div class="form-grid-layout">
-                                <div class="form-group span-full-row">
-                                    <label class="required-field-lbl">Task Title</label>
-                                    <input type="text" id="task-input-title" placeholder="What needs to be done?" class="form-input-text" required>
-                                </div>
-                                <div class="form-group span-full-row">
-                                    <label class="required-field-lbl">Task Summary / Description</label>
-                                    <textarea id="task-input-desc" rows="4" placeholder="Describe the scope framework for this task..." class="form-input-textarea" required></textarea>
-                                </div>
+                        <aside class="calendar-telemetry-sidebar">
+                            <button class="btn btn-primary btn-block" onclick="openAddMeetingModal()">
+                                <i class="fa-solid fa-calendar-plus"></i> Quick Add Event
+                            </button>
+                            
+                            <div class="sidebar-agenda-section">
+                                <h3 class="sidebar-agenda-title"><i class="fa-solid fa-clock"></i> Today's Agenda</h3>
+                                <div class="sidebar-agenda-stack" id="calendar-sidebar-meetings-target">
+                                    </div>
                             </div>
-                            <div class="form-button-dock">
-                                <button type="button" class="btn btn-secondary" onclick="switchPanel('panel-task-list')">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Initialize Task</button>
-                            </div>
-                        </form>
-                    </div>
-                </main>
 
-                <!-- MEETING SCHEDULER PANEL -->
-                <main id="panel-meeting-scheduler" class="dashboard-panel-content hidden">
-                    <div class="content-header">
-                        <h1>Corporate Meeting Scheduler</h1>
-                        <p>Configure internal syncs, coordinate stakeholders, and book video-conference nodes.</p>
+                            <div class="sidebar-agenda-section">
+                                <h3 class="sidebar-agenda-title"><i class="fa-solid fa-list-check"></i> Upcoming Operations</h3>
+                                <div class="sidebar-agenda-stack" id="calendar-sidebar-tasks-target">
+                                    </div>
+                            </div>
+                        </aside>
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 24px; align-items: start;">
-                        <div class="card">
-                            <div class="card-title" style="margin-bottom: 16px;">Schedule Operation Node</div>
-                            <form onsubmit="event.preventDefault(); alert('Meeting booked and invites transmitted safely.'); switchPanel('panel-calendar');">
-                                <div class="form-group">
-                                    <label class="required-field-lbl">Topic / Objective Title</label>
-                                    <input type="text" class="form-input-text" placeholder="e.g. Q3 Pipeline Convergence Sync" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="required-field-lbl">Target Host Staff Member</label>
-                                    <select class="form-select-control" style="width: 100%;">
-                                        <option>Sarah Jenkins (Engineering)</option>
-                                        <option>Marcus Vance (Core Operations)</option>
-                                    </select>
-                                </div>
-                                <div class="form-grid-layout" style="margin-top: 0; gap: 10px;">
-                                    <div class="form-group"><label class="required-field-lbl">Date</label><input type="date" class="form-input-text" required></div>
-                                    <div class="form-group"><label class="required-field-lbl">Time</label><input type="time" class="form-input-text" required></div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Channel Node Configuration</label>
-                                    <select class="form-select-control" style="width: 100%;">
-                                        <option>Nexus Encrypted Video Link</option>
-                                        <option>Physical HQ Meeting Room Alpha</option>
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-block" style="margin-top: 12px;"><i class="fa-solid fa-calendar-plus"></i> Transmit Invitations</button>
-                            </form>
-                        </div>
-                        <div class="meeting-grid-layout">
-                            <div class="card meeting-card meeting-urgent">
-                                <div>
-                                    <div class="meeting-time-block"><i class="fa-solid fa-clock"></i> Today • 02:30 PM PKT</div>
-                                    <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">Sprint Cluster Post-Mortem</h3>
-                                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">Review infrastructure cloud routing anomalies discovered inside core shards.</p>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 12px;">
-                                    <span style="font-size: 12px; font-weight:600;"><i class="fa-solid fa-video"></i> Video Room Alpha</span>
-                                    <button class="btn btn-secondary" onclick="alert('Launching encrypted video node layer...');" style="padding: 4px 10px; font-size:12px;">Join Link</button>
-                                </div>
-                            </div>
-                            <div class="card meeting-card meeting-success">
-                                <div>
-                                    <div class="meeting-time-block"><i class="fa-solid fa-clock"></i> July 08, 2026 • 10:00 AM</div>
-                                    <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">Acme Account Contract Review</h3>
-                                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">Aligning structural billing updates ahead of enterprise expansion phase milestones.</p>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 12px;">
-                                    <span style="font-size: 12px; font-weight:600;"><i class="fa-solid fa-building"></i> Conference Suite B</span>
-                                    <button class="btn btn-secondary" onclick="alert('Agenda tracking document compiled.');" style="padding: 4px 10px; font-size:12px;">View Agenda</button>
-                                </div>
-                            </div>
+                </section>
+
+                <section id="panel-reports" class="app-view-panel-container" style="display: none;">
+                    <div class="panel-view-title-block">
+                        <div>
+                            <h1>System Telemetry & Performance Reports</h1>
+                            <p>Global routing analysis, deployment metrics, and channel distribution models.</p>
                         </div>
                     </div>
-                </main>
 
-                <!-- INTERACTIVE CALENDAR PANEL -->
-                <main id="panel-calendar" class="dashboard-panel-content hidden">
-                    <div class="content-header">
-                        <h1>Production Operations Calendar</h1>
-                        <p>Centralized milestone matrices timeline tracking schedules.</p>
-                    </div>
-                    <div class="calendar-layout-container">
-                        <div class="calendar-header-toolbar">
-                            <h2 style="font-size: 18px; font-weight: 700;"><i class="fa-solid fa-calendar-days"></i> July 2026</h2>
-                        </div>
-                        <div class="calendar-grid-wrapper">
-                            <div class="calendar-day-header">Sun</div>
-                            <div class="calendar-day-header">Mon</div>
-                            <div class="calendar-day-header">Tue</div>
-                            <div class="calendar-day-header">Wed</div>
-                            <div class="calendar-day-header">Thu</div>
-                            <div class="calendar-day-header">Fri</div>
-                            <div class="calendar-day-header">Sat</div>
-
-                            <div class="calendar-day-cell inactive-month"><span class="day-number-lbl">28</span></div>
-                            <div class="calendar-day-cell inactive-month"><span class="day-number-lbl">29</span></div>
-                            <div class="calendar-day-cell inactive-month"><span class="day-number-lbl">30</span></div>
-                            <div class="calendar-day-cell"><span class="day-number-lbl">1</span></div>
-                            <div class="calendar-day-cell"><span class="day-number-lbl">2</span></div>
-                            <div class="calendar-day-cell"><span class="day-number-lbl">3</span></div>
-                            <div class="calendar-day-cell current-today">
-                                <span class="day-number-lbl">4</span>
-                                <div class="calendar-event-pill">Sprint Sync</div>
+                    <div class="telemetry-chart-split-grid">
+                        <div class="chart-canvas-card">
+                            <div class="chart-header-row">
+                                <h3>Velocity Matrix (Performance Q1-Q4)</h3>
+                                <i class="fa-solid fa-chart-bar"></i>
                             </div>
-                        </div>
-                    </div>
-                </main>
-
-                <!-- REPORTS & ANALYTICS PANEL -->
-                <main id="panel-reports" class="dashboard-panel-content hidden">
-                    <div class="content-header">
-                        <h1>Enterprise Analytical Intelligence</h1>
-                        <p>Calculated operational metrics and funnel distribution indexes.</p>
-                    </div>
-                    <div class="reports-grid-layout">
-                        <div class="card">
-                            <div class="card-title">Sprints Velocity vs ARR Performance Index</div>
-                            <div class="chart-container">
+                            <div class="chart-frame-wrapper">
                                 <canvas id="reportSalesChart"></canvas>
                             </div>
                         </div>
-                        <div class="card">
-                            <div class="card-title">Inbound Channel Funnel Yield</div>
-                            <div class="chart-container">
+                        <div class="chart-canvas-card">
+                            <div class="chart-header-row">
+                                <h3>Routing Density Channels</h3>
+                                <i class="fa-solid fa-chart-pie"></i>
+                            </div>
+                            <div class="chart-frame-wrapper">
                                 <canvas id="reportFunnelChart"></canvas>
                             </div>
                         </div>
                     </div>
-                </main>
+                </section>
 
-            </div> <!-- Close workspace-panels -->
+                <section id="panel-settings" class="app-view-panel-container" style="display: none;">
+                    <div class="panel-view-title-block">
+                        <div>
+                            <h1>System Controls & Parameters</h1>
+                            <p>Configure local environment parameters, enterprise settings, and UI branding schemas.</p>
+                        </div>
+                    </div>
 
-            <!-- PERSISTENT APP ENGINE GLOBAL FOOTER -->
-            <footer class="app-global-footer" style="margin-top: auto; padding: 16px 24px; border-top: 1px solid var(--border-color, #e5e7eb); display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-muted, #6b7280); background: #ffffff;">
-                <div>&copy; 2026 <strong>NexusCRM Global Networks</strong>. All operational rights reserved.</div>
-                <div style="display: flex; gap: 16px; align-items: center;">
+                    <div class="settings-form-card-wrapper">
+                        <form id="settings-configuration-form" onsubmit="saveSystemSettings(); return false;">
+                            <div class="form-responsive-layout-grid">
+                                <div class="form-group">
+                                    <label for="set-company-name">Company Identity</label>
+                                    <input type="text" id="set-company-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="set-company-email">Corporate System Email</label>
+                                    <input type="email" id="set-company-email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="set-company-phone">Gateway Hotline String</label>
+                                    <input type="text" id="set-company-phone">
+                                </div>
+                                <div class="form-group">
+                                    <label for="set-company-website">Enterprise Web URL Domain</label>
+                                    <input type="url" id="set-company-website">
+                                </div>
+                                <div class="form-group span-full-columns">
+                                    <label for="set-company-address">Physical Node Center Hub Address</label>
+                                    <input type="text" id="set-company-address">
+                                </div>
+                                <div class="form-group">
+                                    <label for="set-system-timezone">Temporal Sync Zone</label>
+                                    <select id="set-system-timezone" class="select-input-native">
+                                        <option value="Pakistan Standard Time (PKT) - UTC+5">Pakistan Standard Time (PKT) - UTC+5</option>
+                                        <option value="Coordinated Universal Time (UTC)">Coordinated Universal Time (UTC)</option>
+                                        <option value="Eastern Standard Time (EST) - UTC-5">Eastern Standard Time (EST) - UTC-5</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="set-system-currency">Financial Matrix Currency</label>
+                                    <select id="set-system-currency" class="select-input-native">
+                                        <option value="PKR (Rs) - Pakistani Rupee">PKR (Rs) - Pakistani Rupee</option>
+                                        <option value="USD ($) - United States Dollar">USD ($) - United States Dollar</option>
+                                        <option value="EUR (€) - Euro Architecture">EUR (€) - Euro Architecture</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-action-footer">
+                                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Commit Parameters</button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <section id="panel-profile" class="app-view-panel-container" style="display: none;">
+                    <div class="panel-view-title-block">
+                        <div>
+                            <h1>Operator Identity Ledger</h1>
+                            <p>Manage credentials, cryptographic bio context, and validation avatar asset.</p>
+                        </div>
+                    </div>
+
+                    <div class="identity-ledger-split-layout">
+                        <div class="identity-profile-avatar-card">
+                            <div class="avatar-edit-frame">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80" alt="Identity Image" id="profile-avatar-display" class="profile-main-image-render">
+                            </div>
+                            <div class="form-group w-full mt-4">
+                                <label for="profile-avatar-url-input">Direct Avatar Asset Link URL</label>
+                                <input type="text" id="profile-avatar-url-input" onchange="updateProfileAvatarFromInput()" placeholder="https://images.unsplash.com/...">
+                            </div>
+                        </div>
+
+                        <div class="identity-profile-details-card">
+                            <form id="identity-ledger-form" onsubmit="saveOperatorIdentityProfile(); return false;">
+                                <div class="form-responsive-layout-grid">
+                                    <div class="form-group">
+                                        <label for="prof-full-name">Full Signature Identity Name</label>
+                                        <input type="text" id="prof-full-name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="prof-email-address">Secure Login Routing Email</label>
+                                        <input type="email" id="prof-email-address" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="prof-phone-line">Direct Telecom Vector Line</label>
+                                        <input type="text" id="prof-phone-line">
+                                    </div>
+                                    <div class="form-group span-full-columns">
+                                        <label for="prof-biography-block">Role Mission Directives & Cryptographic Bio Statement</label>
+                                        <textarea id="prof-biography-block" rows="4" class="textarea-input-native"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-action-footer">
+                                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-shield-halved"></i> Bind Identity Context</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+
+            <footer class="workspace-footer-strip">
+                <div>© 2026 <strong>NexusCRM Global Networks</strong>. All operational rights reserved.</div>
+                <div class="footer-telemetry-nodes">
                     <span>System Node: <strong>Lahore Operations Hub</strong></span>
-                    <span>Framework Version: <strong>v5.0.0-Release</strong></span>
+                    <span class="version-tag">Framework Version: <strong>v5.0.0-Release</strong></span>
                 </div>
             </footer>
 
-        </div> <!-- Close main-workspace -->
-    </div> <!-- Close dashboard-wrapper -->
-
-    <!-- ==========================================
-       3. FLOATING COMPONENTS & OVERLAYS
-       ========================================== -->
-    <!-- SLIDING NOTIFICATION OVERLAY -->
-    <div id="notification-sliding-panel" class="sliding-notification-panel-tray">
+        </div> </div> <div id="notification-sliding-panel" class="sliding-notification-panel-tray">
         <div class="notification-panel-header">
             <h2>Notifications</h2>
             <button class="btn-close-modal" onclick="toggleNotificationPanel()"><i class="fa-solid fa-xmark"></i></button>
@@ -824,10 +484,181 @@
                     <span class="activity-time">3 mins ago</span>
                 </div>
             </div>
+            <div class="notif-item-row">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <div>
+                    <p>Database synchronization routine absolute verification index complete.</p>
+                    <span class="activity-time">2 hours ago</span>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- EXTERNAL DEPENDENCIES AND ROUTER LOGIC -->
+    <div id="customer-crud-modal" class="modal-overlay-backdrop-container" style="display: none;">
+        <div class="modal-window-surface">
+            <div class="modal-header-container">
+                <h3 id="customer-modal-title">Provision New Account Node</h3>
+                <button class="btn-close-modal" onclick="closeCustomerModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="customer-crud-form">
+                <input type="hidden" id="customer-editing-id-holder">
+                <div class="modal-body-scroll-content">
+                    <div class="form-group">
+                        <label for="cust-input-name">Corporate Entity / Client Name</label>
+                        <input type="text" id="cust-input-name" placeholder="Acme Analytics Corp" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cust-input-email">Primary Communication Destination Email</label>
+                        <input type="email" id="cust-input-email" placeholder="billing@acme.io" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cust-input-segment">Market Pipeline Segment Assignment</label>
+                        <select id="cust-input-segment" class="select-input-native" required>
+                            <option value="Enterprise SLA">Enterprise SLA</option>
+                            <option value="Mid-Market Growth">Mid-Market Growth</option>
+                            <option value="Startup Scale">Startup Scale</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cust-input-status">Initial Lifecycle Operational Status</label>
+                        <select id="cust-input-status" class="select-input-native" required>
+                            <option value="Active">Active</option>
+                            <option value="Suspended">Suspended</option>
+                            <option value="Under Review">Under Review</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer-container">
+                    <button type="button" class="btn btn-secondary" onclick="closeCustomerModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Commit Entry</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="employee-crud-modal" class="modal-overlay-backdrop-container" style="display: none;">
+        <div class="modal-window-surface">
+            <div class="modal-header-container">
+                <h3 id="employee-modal-title">Onboard Operational Specialist</h3>
+                <button class="btn-close-modal" onclick="closeEmployeeModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="employee-crud-form">
+                <input type="hidden" id="employee-editing-id-holder">
+                <div class="modal-body-scroll-content">
+                    <div class="form-group">
+                        <label for="emp-input-name">Operator Signature Full Name</label>
+                        <input type="text" id="emp-input-name" placeholder="Sarah Jenkins" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="emp-input-role">System Assignment Role Definition</label>
+                        <input type="text" id="emp-input-role" placeholder="Lead Cloud Engineer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="emp-input-dept">Department Unit Allocation</label>
+                        <input type="text" id="emp-input-dept" placeholder="Engineering Department" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="emp-input-email">Secure Communication Vector Email</label>
+                        <input type="email" id="emp-input-email" placeholder="s.jenkins@nexus.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="emp-input-phone">Direct Access Line Hotline</label>
+                        <input type="text" id="emp-input-phone" placeholder="+1 (555) 391-4402">
+                    </div>
+                </div>
+                <div class="modal-footer-container">
+                    <button type="button" class="btn btn-secondary" onclick="closeEmployeeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Commit Operator</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="task-crud-modal" class="modal-overlay-backdrop-container" style="display: none;">
+        <div class="modal-window-surface">
+            <div class="modal-header-container">
+                <h3 id="task-modal-title">Launch Operation Directive Ticket</h3>
+                <button class="btn-close-modal" onclick="closeTaskModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="task-crud-form">
+                <input type="hidden" id="task-editing-id-holder">
+                <div class="modal-body-scroll-content">
+                    <div class="form-group">
+                        <label for="task-input-title">Operation Directive Title</label>
+                        <input type="text" id="task-input-title" placeholder="Database Optimization Routine" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-input-desc">Detailed Execution Parameters</label>
+                        <textarea id="task-input-desc" rows="3" class="textarea-input-native" placeholder="Execute column indexes optimization across transaction logs..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-input-priority">SLA Priority Severity Index</label>
+                        <select id="task-input-priority" class="select-input-native" required>
+                            <option value="CRITICAL">CRITICAL SEVERITY</option>
+                            <option value="HIGH">HIGH SEVERITY</option>
+                            <option value="MEDIUM">MEDIUM PRIORITY</option>
+                            <option value="LOW">LOW OPTIONAL</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-input-progress">Execution Completion Progress Vector (%)</label>
+                        <input type="number" id="task-input-progress" min="0" max="100" placeholder="45" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-input-assignee">Assigned Primary Operator Vector</label>
+                        <input type="text" id="task-input-assignee" placeholder="Sarah Jenkins" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-input-date">Target Validation Due Date</label>
+                        <input type="date" id="task-input-date" required>
+                    </div>
+                </div>
+                <div class="modal-footer-container">
+                    <button type="button" class="btn btn-secondary" onclick="closeTaskModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Deploy Ticket</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="meeting-crud-modal" class="modal-overlay-backdrop-container" style="display: none;">
+        <div class="modal-window-surface">
+            <div class="modal-header-container">
+                <h3 id="meeting-modal-title">Schedule Chronos Sync Node</h3>
+                <button class="btn-close-modal" onclick="closeMeetingModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="meeting-crud-form">
+                <input type="hidden" id="meeting-editing-id-holder">
+                <div class="modal-body-scroll-content">
+                    <div class="form-group">
+                        <label for="meet-input-title">Sync Node Topic Heading</label>
+                        <input type="text" id="meet-input-title" placeholder="Quarterly Structural Review" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="meet-input-date">Calendar Horizon Target Date</label>
+                        <input type="date" id="meet-input-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="meet-input-time">Temporal Sync Timestamp Hour</label>
+                        <input type="time" id="meet-input-time" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="meet-input-type">System Sync Matrix Vector Channel</label>
+                        <select id="meet-input-type" class="select-input-native" required>
+                            <option value="Secure Video Link">Secure Video Link</option>
+                            <option value="Internal Physical Suite">Internal Physical Suite</option>
+                            <option value="Direct Audio Encrypted">Direct Audio Encrypted</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer-container">
+                    <button type="button" class="btn btn-secondary" onclick="closeMeetingModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Lock Target</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="app.js"></script>
 </body>
