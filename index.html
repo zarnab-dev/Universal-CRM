@@ -8,33 +8,1249 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <style>
+/* ==========================================================================
+   CORE DESIGN SYSTEM & PREMIUM ENTERPRISE SAAS DESIGN MATRIX
+   ========================================================================== */
+
+:root {
+    --bg-base: #f8f6f2; 
+    --bg-surface: #ffffff;
+    
+    --brand-primary: #9b4d5a; 
+    --brand-dark: #23181a;
+    --brand-primary-light: rgba(155, 77, 90, 0.08);
+    
+    --text-primary: #1e191a;
+    --text-secondary: #4a3e40;
+    --text-muted: #8c8082;
+    --border-color: #ebdcd5;   
+    --border-light: #f3eae6;
+    
+    --color-blue: #4f7396;     
+    --color-purple: #74526c;   
+    --color-orange: #b8694a;   
+    --color-green: #486e56;    
+    
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --transition-speed: 0.22s;
+    --shadow-sm: 0 2px 5px rgba(35,24,26,0.04);
+    --shadow-md: 0 6px 18px rgba(35,24,26,0.06);
+    --shadow-lg: 0 12px 32px rgba(35,24,26,0.1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+button, input, select, textarea { font-family: inherit; font-size: inherit; color: inherit; }
+a { text-decoration: none; color: inherit; }
+
+/* ==========================================================================
+   LAYOUT ENGINE
+   ========================================================================== */
+
+.dashboard-wrapper {
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+    width: 100%;
+}
+
+.sidebar-container {
+    width: 280px;
+    background-color: var(--brand-dark);
+    color: #fceee8;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px;
+    position: fixed;
+    top: 0; bottom: 0; left: 0;
+    z-index: 100;
+    transition: transform var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    border-right: 1px solid rgba(255,255,255,0.04);
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px 24px 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.sidebar-header .logo {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar-header .logo i { color: #e5939e; }
+
+.sidebar-toggle-mobile {
+    display: none;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.sidebar-profile-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: var(--radius-md);
+    margin: 20px 0;
+    border: 1px solid rgba(255,255,255,0.02);
+}
+
+.profile-avatar-wrapper { position: relative; width: 44px; height: 44px; flex-shrink: 0; }
+
+.profile-img {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.2);
+}
+
+.status-indicator {
+    position: absolute; bottom: 0; right: 0;
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    border: 2px solid var(--brand-dark);
+}
+.status-indicator.online { background-color: #5bb381; }
+
+.profile-info-block { overflow: hidden; }
+.profile-info-block h4 { font-size: 14px; font-weight: 600; color: #fff; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.profile-info-block p  { font-size: 12px; color: #b0a2a4; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; margin-top: 2px; }
+
+.sidebar-nav-menu { display: flex; flex-direction: column; gap: 4px; flex: 1; overflow-y: auto; }
+
+.nav-item-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    color: #d1bfc2;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    transition: all 0.15s ease;
+}
+
+.nav-item-btn i { font-size: 16px; width: 20px; text-align: center; color: #a39093; transition: color 0.15s ease; }
+.nav-item-btn:hover { background: rgba(255,255,255,0.04); color: #fff; }
+.nav-item-btn:hover i { color: #fff; }
+.nav-item-btn.active { background: var(--brand-primary); color: #fff; font-weight: 600; }
+.nav-item-btn.active i { color: #fff; }
+
+.sidebar-footer-action { padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.06); margin-top: auto; }
+
+.main-workspace { flex: 1; margin-left: 280px; display: flex; flex-direction: column; min-height: 100vh; min-width: 0; }
+
+.workspace-navbar {
+    height: 70px;
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    position: sticky;
+    top: 0;
+    z-index: 90;
+    box-shadow: 0 1px 4px rgba(35,24,26,0.01);
+}
+
+.navbar-left-cluster { display: flex; align-items: center; gap: 16px; flex: 1; max-width: 460px; }
+
+.sidebar-trigger-btn { display: none; background: none; border: none; font-size: 18px; color: var(--text-secondary); cursor: pointer; }
+
+.search-bar-wrapper { position: relative; width: 100%; }
+.search-bar-wrapper i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 14px; pointer-events: none; }
+.search-bar-wrapper input {
+    width: 100%;
+    height: 40px;
+    background-color: #fcfbfa;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0 16px 0 42px;
+    font-size: 14px;
+    outline: none;
+    transition: all var(--transition-speed) ease;
+}
+.search-bar-wrapper input:focus {
+    background-color: #fff;
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 3px rgba(155, 77, 90, 0.12);
+}
+
+.navbar-right-cluster { display: flex; align-items: center; gap: 16px; }
+
+.nav-action-icon-btn {
+    background: none;
+    border: none;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.15s ease;
+    border: 1px solid transparent;
+}
+.nav-action-icon-btn:hover { background-color: #f7f3f0; border-color: var(--border-light); }
+
+.badge-dot {
+    position: absolute;
+    top: 10px; right: 10px;
+    width: 8px; height: 8px;
+    background-color: var(--brand-primary);
+    border-radius: 50%;
+    border: 2px solid #fff;
+}
+
+.vertical-divider { width: 1px; height: 24px; background-color: var(--border-color); }
+
+.navbar-user-tag {
+    display: flex; align-items: center; gap: 10px;
+    cursor: pointer; padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    transition: background 0.15s;
+}
+.navbar-user-tag:hover { background-color: #f7f3f0; }
+
+.avatar-mini { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+#navbar-username-lbl { font-size: 14px; font-weight: 600; color: var(--text-secondary); }
+
+/* ==========================================================================
+   VIEWPORT PANELS
+   ========================================================================== */
+
+.panel-content-viewport {
+    flex: 1;
+    padding: 32px;
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.app-view-panel-container {
+    animation: panelFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes panelFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.panel-view-title-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+}
+
+.panel-view-title-block h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; color: var(--text-primary); }
+.panel-view-title-block p  { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+
+/* ANALYTICS CARDS */
+.analytics-glance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+}
+
+.metric-card-node {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1), box-shadow var(--transition-speed);
+}
+.metric-card-node:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: #dfcecb; }
+
+.metric-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.metric-label-tag { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.metric-value-num { font-size: 32px; font-weight: 800; color: var(--text-primary); margin-top: 6px; letter-spacing: -0.5px; }
+
+.metric-icon-box {
+    width: 46px; height: 46px;
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+.metric-icon-box.m-blue   { background-color: #eff5fa; color: var(--color-blue); }
+.metric-icon-box.m-purple { background-color: #faf2f8; color: var(--color-purple); }
+.metric-icon-box.m-orange { background-color: #fdf5f2; color: var(--color-orange); }
+.metric-icon-box.m-green  { background-color: #eff6f2; color: var(--color-green); }
+
+.metric-card-footer { margin-top: 20px; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+.metric-card-footer.positive { color: #3e825a; }
+.metric-card-footer.negative { color: #b5533c; }
+.metric-card-footer span { font-weight: 700; }
+
+/* CHARTS */
+.telemetry-chart-split-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+
+.chart-canvas-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    width: 100%;
+}
+
+.chart-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.chart-header-row h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+.chart-header-row i  { color: var(--text-muted); cursor: pointer; }
+.chart-frame-wrapper { position: relative; height: 340px; width: 100%; }
+
+/* ==========================================================================
+   CALENDAR
+   ========================================================================== */
+
+.calendar-split-layout-engine {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 28px;
+    align-items: start;
+    width: 100%;
+}
+
+.calendar-grid-card-workspace {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+}
+
+.calendar-control-action-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.calendar-nav-left { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.calendar-main-header { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; min-width: 160px; }
+
+.calendar-btn-group {
+    display: flex; align-items: center;
+    background-color: #f7f3f0;
+    padding: 4px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-light);
+}
+
+.calendar-matrix-mesh-wrapper { display: flex; flex-direction: column; width: 100%; }
+
+.calendar-weekday-header-strip {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.calendar-days-grid-mesh {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-auto-rows: minmax(105px, 1fr);
+    gap: 1px;
+    background-color: var(--border-light);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-light);
+    margin-top: 1px;
+}
+
+.calendar-day-cell-node {
+    background-color: var(--bg-surface);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+    position: relative;
+    transition: background-color 0.15s ease;
+}
+.calendar-day-cell-node:hover { background-color: #faf8f5; }
+.calendar-day-cell-node.muted-day-span { background-color: #faf9f6; }
+.calendar-day-cell-node.muted-day-span .day-number-lbl { color: var(--text-muted); opacity: 0.5; }
+
+.day-number-lbl {
+    font-size: 13px; font-weight: 600; color: var(--text-secondary);
+    width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+}
+
+.calendar-day-cell-node.current-runtime-day .day-number-lbl {
+    background-color: var(--brand-primary);
+    color: #fff !important;
+    font-weight: 700;
+    box-shadow: 0 2px 6px rgba(155,77,90,0.3);
+}
+
+.cell-events-stack-container { display: flex; flex-direction: column; gap: 3px; overflow-y: auto; flex: 1; max-height: 70px; }
+
+.calendar-micro-indicator-tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 100%;
+    display: block;
+}
+.calendar-micro-indicator-tag.c-meet { background-color: #eff5fa; color: var(--color-blue); border-left: 3px solid var(--color-blue); }
+.calendar-micro-indicator-tag.c-task { background-color: #fdf5f2; color: var(--color-orange); border-left: 3px solid var(--color-orange); }
+
+.calendar-telemetry-sidebar { display: flex; flex-direction: column; gap: 24px; }
+
+.sidebar-agenda-section {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+}
+
+.sidebar-agenda-title {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 8px;
+}
+.sidebar-agenda-title i { color: var(--brand-primary); }
+
+.sidebar-agenda-stack { display: flex; flex-direction: column; gap: 12px; }
+
+.agenda-summary-item-card {
+    background-color: #fdfcfb;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: all 0.15s ease;
+}
+.agenda-summary-item-card:hover { border-color: #dfcecb; background-color: #fff; box-shadow: var(--shadow-sm); }
+
+.agenda-summary-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.agenda-summary-card-head h4 { font-size: 13.5px; font-weight: 700; color: var(--text-primary); }
+
+.agenda-summary-card-meta { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+.agenda-summary-card-meta i { color: var(--brand-primary); }
+
+/* ==========================================================================
+   DATA TABLES
+   ========================================================================== */
+
+.data-table-control-interface {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    border-bottom: none;
+}
+
+.table-search-override { max-width: 400px; }
+
+.filter-actions-cluster { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+.data-table-scroll-container {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    width: 100%;
+    overflow-x: auto;
+    position: relative;
+}
+
+.enterprise-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+    min-width: 850px;
+}
+
+.enterprise-data-table th {
+    background-color: #faf8f5;
+    color: var(--text-secondary);
+    font-weight: 700;
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: sticky; top: 0; z-index: 10;
+}
+
+.enterprise-data-table td {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-secondary);
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.enterprise-data-table tbody tr { transition: background-color 0.15s ease; }
+.enterprise-data-table tbody tr:hover { background-color: #fbf9f6; }
+
+.table-identity-flex-block { display: flex; align-items: center; gap: 12px; }
+.table-avatar-asset { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; background-color: var(--border-light); flex-shrink: 0; }
+.table-identity-text h5 { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+.table-identity-text p  { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+
+/* ==========================================================================
+   TASK CARDS
+   ========================================================================== */
+
+.kanban-task-matrix-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    width: 100%;
+}
+
+.premium-task-node-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 250px;
+    gap: 16px;
+    transition: transform var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1), box-shadow var(--transition-speed);
+}
+.premium-task-node-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: #dfcecb; }
+
+.task-card-top-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.task-card-title-string { font-size: 16px; font-weight: 700; color: var(--text-primary); line-height: 1.4; }
+.task-card-body-description {
+    font-size: 13.5px; color: var(--text-secondary); line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.task-progress-gauge-box { display: flex; flex-direction: column; gap: 6px; }
+.task-progress-gauge-labels { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; color: var(--text-muted); }
+.task-progress-bar-track { height: 6px; background-color: var(--border-light); border-radius: 3px; width: 100%; overflow: hidden; }
+.task-progress-bar-fill-index { height: 100%; background-color: var(--brand-primary); border-radius: 3px; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+
+.task-card-bottom-row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-light);
+    margin-top: auto;
+}
+.task-card-due-tag { font-size: 12px; font-weight: 600; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+.task-card-due-tag i { color: var(--brand-primary); }
+
+/* ==========================================================================
+   BADGES & BUTTONS
+   ========================================================================== */
+
+.sys-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sys-badge.b-active    { background-color: #eff6f2; color: var(--color-green); }
+.sys-badge.b-suspended { background-color: #fdf3f2; color: var(--color-orange); }
+.sys-badge.b-review    { background-color: #faf2f8; color: var(--color-purple); }
+
+.sys-badge.p-critical { background-color: #fdf3f2; color: #b5533c; border: 1px solid rgba(181,83,60,0.15); }
+.sys-badge.p-high     { background-color: #fff7ee; color: #b8694a; border: 1px solid rgba(184,105,74,0.15); }
+.sys-badge.p-medium   { background-color: #f4f6fa; color: #4f7396; border: 1px solid rgba(79,115,150,0.15); }
+.sys-badge.p-low      { background-color: #f2f7f4; color: #486e56; border: 1px solid rgba(72,110,86,0.15); }
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+}
+
+.btn-primary { background-color: var(--brand-primary); color: #fff; box-shadow: 0 2px 6px rgba(155,77,90,0.15); }
+.btn-primary:hover { background-color: #853f4b; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(155,77,90,0.25); }
+
+.btn-secondary { background-color: #fff; border-color: var(--border-color); color: var(--text-secondary); }
+.btn-secondary:hover { background-color: #faf8f5; border-color: #dfcecb; }
+
+.btn-secondary-compact {
+    background-color: #fff; border-color: var(--border-color); color: var(--text-secondary);
+    padding: 6px 12px; font-size: 12.5px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+.btn-secondary-compact:hover { background-color: #fff; border-color: var(--brand-primary); color: var(--brand-primary); }
+
+.btn-icon-only {
+    background: transparent; border: none;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+.btn-icon-only:hover { background-color: rgba(35,24,26,0.04); }
+
+.btn-outline-danger {
+    background-color: transparent;
+    border-color: rgba(229,147,158,0.2);
+    color: #e5939e;
+    cursor: pointer;
+}
+.btn-outline-danger:hover { background-color: rgba(229,147,158,0.06); color: #fff; border-color: #e5939e; }
+
+.btn-block { width: 100%; display: flex; }
+
+.table-action-button-group { display: flex; align-items: center; justify-content: flex-end; gap: 6px; }
+
+.action-trigger-mini-btn {
+    width: 32px; height: 32px;
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    background: #fdfcfb;
+    border: 1px solid var(--border-light);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.12s ease;
+}
+.action-trigger-mini-btn:hover { background-color: #fff; border-color: var(--brand-primary); color: var(--brand-primary); }
+.action-trigger-mini-btn.b-del:hover { border-color: #b5533c; color: #b5533c; background-color: #fdf3f2; }
+
+/* ==========================================================================
+   FORMS
+   ========================================================================== */
+
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; width: 100%; }
+.form-group label { font-size: 13px; font-weight: 700; color: var(--text-secondary); letter-spacing: 0.2px; }
+
+.form-group input, .select-input-native, .textarea-input-native {
+    width: 100%; height: 42px;
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0 14px;
+    font-size: 14px;
+    outline: none;
+    transition: all var(--transition-speed) ease;
+}
+.textarea-input-native { height: auto; padding: 12px 14px; resize: vertical; }
+
+.form-group input:focus, .select-input-native:focus, .textarea-input-native:focus {
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 3px rgba(155, 77, 90, 0.12);
+}
+
+.form-responsive-layout-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 24px; }
+.span-full-columns { grid-column: span 2; }
+
+.form-action-footer {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ==========================================================================
+   AUTH VIEWS — LOGIN & FORGOT PASSWORD
+   ========================================================================== */
+
+.auth-container {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-base);
+    padding: 24px;
+}
+
+.auth-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 420px;
+    padding: 40px 32px;
+    box-shadow: var(--shadow-lg);
+}
+
+.auth-header { text-align: center; margin-bottom: 28px; }
+
+.auth-header .logo {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--brand-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.auth-header .logo i { color: var(--brand-primary); }
+.auth-header p { font-size: 14px; color: var(--text-muted); margin-top: 8px; }
+
+/* Error message */
+.auth-error-msg {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #fdf3f2;
+    border: 1px solid rgba(181,83,60,0.2);
+    border-radius: var(--radius-md);
+    color: #b5533c;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    animation: shakeError 0.3s ease;
+}
+
+@keyframes shakeError {
+    0%, 100% { transform: translateX(0); }
+    25%       { transform: translateX(-4px); }
+    75%       { transform: translateX(4px); }
+}
+
+/* Success message */
+.auth-success-msg {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #eff6f2;
+    border: 1px solid rgba(72,110,86,0.2);
+    border-radius: var(--radius-md);
+    color: #386249;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+.auth-success-msg i { color: var(--color-green); flex-shrink: 0; }
+
+/* Forgot password link row */
+.auth-forgot-link {
+    text-align: center;
+    margin-top: 16px;
+}
+
+.link-btn {
+    background: none;
+    border: none;
+    color: var(--brand-primary);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    transition: background 0.15s, color 0.15s;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.link-btn:hover { background-color: var(--brand-primary-light); color: #853f4b; }
+
+/* Password show/hide toggle */
+.password-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-input-wrapper input {
+    width: 100%;
+    padding-right: 44px !important;
+}
+
+.pw-toggle-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 4px;
+    border-radius: var(--radius-sm);
+    transition: color 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pw-toggle-btn:hover { color: var(--brand-primary); }
+
+/* Forgot password icon block */
+.forgot-icon-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 24px;
+    gap: 8px;
+}
+
+.forgot-icon-circle {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--brand-primary-light), rgba(155,77,90,0.12));
+    border: 2px solid rgba(155,77,90,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--brand-primary);
+    margin-bottom: 4px;
+}
+
+.forgot-icon-block h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+}
+
+.forgot-subtext {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    max-width: 300px;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   IDENTITY LEDGER
+   ========================================================================== */
+
+.identity-ledger-split-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+    align-items: start;
+    width: 100%;
+}
+
+.identity-profile-avatar-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.avatar-edit-frame { width: 140px; height: 140px; border-radius: 50%; overflow: hidden; border: 4px solid #fff; box-shadow: var(--shadow-md); }
+.profile-main-image-render { width: 100%; height: 100%; object-fit: cover; }
+
+.identity-profile-details-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    box-shadow: var(--shadow-sm);
+}
+
+/* ==========================================================================
+   MODALS — fixed layout so footer always shows
+   ========================================================================== */
+
+.modal-overlay-backdrop-container {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(35, 24, 26, 0.4);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: overlayReveal 0.2s ease forwards;
+}
+
+@keyframes overlayReveal { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-window-surface {
+    background-color: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 540px;
+    /* Key fix: use fixed max-height and flex so footer is always visible */
+    max-height: 90vh;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalSlideUp { from { transform: translateY(20px); } to { transform: translateY(0); } }
+
+.modal-header-container {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0; /* never shrink header */
+}
+.modal-header-container h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+
+.btn-close-modal {
+    background: none; border: none;
+    font-size: 16px; color: var(--text-muted);
+    cursor: pointer;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: background-color 0.12s;
+}
+.btn-close-modal:hover { background-color: #f7f3f0; color: var(--text-primary); }
+
+.modal-body-scroll-content {
+    padding: 24px;
+    overflow-y: auto; /* scrolls only the body content */
+    flex: 1; /* takes remaining space */
+}
+
+.modal-footer-container {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    background-color: #faf8f5;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    flex-shrink: 0; /* never shrink footer — always visible */
+}
+
+/* Settings card */
+.settings-form-card-wrapper {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    box-shadow: var(--shadow-sm);
+}
+
+/* ==========================================================================
+   NOTIFICATION TRAY
+   ========================================================================== */
+
+.sliding-notification-panel-tray {
+    position: fixed;
+    top: 0; right: -360px;
+    width: 360px; bottom: 0;
+    background-color: var(--bg-surface);
+    border-left: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    transition: right var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sliding-notification-panel-tray.tray-active-state { right: 0; }
+
+.notification-panel-header { padding: 20px 24px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; }
+.notification-panel-header h2 { font-size: 16px; font-weight: 700; }
+
+.notification-panel-body { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+
+.notif-item-row { padding: 16px 24px; border-bottom: 1px solid var(--border-light); display: flex; gap: 14px; align-items: flex-start; transition: background 0.15s; }
+.notif-item-row:hover { background-color: #fcfbfa; }
+.notif-item-row.unread { background-color: #fdf8f6; }
+.notif-item-row i { font-size: 16px; margin-top: 3px; }
+.notif-item-row i.fa-circle-info { color: var(--color-blue); }
+.notif-item-row i.fa-triangle-exclamation { color: var(--color-orange); }
+.notif-item-row p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.4; }
+.activity-time { font-size: 11px; color: var(--text-muted); display: block; margin-top: 4px; }
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+
+.workspace-footer-strip {
+    height: 60px;
+    border-top: 1px solid var(--border-color);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-muted);
+    background-color: var(--bg-surface);
+    margin-top: auto;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.footer-telemetry-nodes { display: flex; gap: 16px; align-items: center; }
+
+/* ==========================================================================
+   PASSWORD TOGGLE HELPER (JS)
+   ========================================================================== */
+
+/* utility — js toggles input type between text/password */
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1200px) {
+    .calendar-split-layout-engine { grid-template-columns: 1fr; }
+    .calendar-telemetry-sidebar { flex-direction: row; flex-wrap: wrap; }
+    .calendar-telemetry-sidebar > * { flex: 1; min-width: 280px; }
+    .calendar-telemetry-sidebar button { width: 100%; flex: none; }
+}
+
+@media (max-width: 992px) {
+    .sidebar-container { transform: translateX(-100%); }
+    .sidebar-container.mobile-visible { transform: translateX(0); }
+    .sidebar-toggle-mobile { display: block; }
+    .main-workspace { margin-left: 0; }
+    .sidebar-trigger-btn { display: block; }
+    .workspace-navbar { padding: 0 20px; }
+    .panel-content-viewport { padding: 20px; }
+    .identity-ledger-split-layout { grid-template-columns: 1fr; }
+    .identity-profile-avatar-card { width: 100%; }
+}
+
+@media (max-width: 768px) {
+    .form-responsive-layout-grid { grid-template-columns: 1fr; }
+    .span-full-columns { grid-column: span 1; }
+    .panel-view-title-block { flex-direction: column; align-items: flex-start; }
+    .panel-view-title-block button, .panel-view-title-block a { width: 100%; }
+    .data-table-control-interface { flex-direction: column; align-items: stretch; }
+    .table-search-override { max-width: 100%; }
+    .filter-actions-cluster { width: 100%; }
+    .filter-actions-cluster select { flex: 1; }
+    .workspace-footer-strip { height: auto; padding: 16px 20px; flex-direction: column; align-items: center; text-align: center; }
+    .footer-telemetry-nodes { flex-direction: column; gap: 6px; }
+    .version-tag { display: none; }
+    .calendar-days-grid-mesh { grid-auto-rows: minmax(85px, 1fr); }
+    .cell-events-stack-container { max-height: 50px; }
+
+    /* Modal full-screen on mobile */
+    .modal-window-surface {
+        max-width: 100%;
+        max-height: 95vh;
+        margin: 0;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        align-self: flex-end;
+    }
+    .modal-overlay-backdrop-container {
+        align-items: flex-end;
+        padding: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-right-cluster .vertical-divider,
+    .navbar-right-cluster .nav-action-icon-btn:nth-of-type(2),
+    #navbar-username-lbl { display: none; }
+    .search-bar-wrapper input { width: 140px; }
+    .search-bar-wrapper input:focus { width: 200px; }
+    .auth-card { padding: 28px 20px; }
+}
+
+</style>
 </head>
 <body>
 
+    <!-- ======================================================
+         LOGIN VIEW
+    ====================================================== -->
     <div id="login-view" class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
                 <div class="logo"><i class="fa-solid fa-layer-group"></i> NexusCRM</div>
                 <p>Welcome back! Please login to your account.</p>
             </div>
-            <form id="login-form" onsubmit="navigateTo('dashboard-view'); return false;">
+            <form id="login-form" onsubmit="return handleLogin(event);">
                 <div class="form-group">
                     <label for="login-email">Email or Username</label>
-                    <input type="text" id="login-email" placeholder="admin@nexus.com" required>
+                    <input type="text" id="login-email" placeholder="admin@nexus.com" required autocomplete="username">
                 </div>
                 <div class="form-group">
                     <label for="login-password">Password</label>
-                    <input type="password" id="login-password" placeholder="••••••••" required>
+                    <div class="password-input-wrapper">
+                        <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+                        <button type="button" class="pw-toggle-btn" onclick="togglePasswordVisibility('login-password', this)" aria-label="Show password">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Login</button>
+                <!-- Error message block -->
+                <div id="login-error-msg" class="auth-error-msg" style="display:none;">
+                    <i class="fa-solid fa-triangle-exclamation"></i> <span></span>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top:8px;">
+                    <i class="fa-solid fa-right-to-bracket"></i> Login
+                </button>
             </form>
+            <div class="auth-forgot-link">
+                <button type="button" onclick="showForgotView()" class="link-btn">
+                    <i class="fa-solid fa-key"></i> Forgot your password?
+                </button>
+            </div>
             <div class="auth-footer">
                 <p>Secured via Enterprise Cryptographic Gateway Node</p>
             </div>
         </div>
     </div>
 
+    <!-- ======================================================
+         FORGOT PASSWORD VIEW
+    ====================================================== -->
+    <div id="forgot-view" class="auth-container" style="display:none;">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo"><i class="fa-solid fa-layer-group"></i> NexusCRM</div>
+                <p>Enter your registered email to receive recovery instructions.</p>
+            </div>
+
+            <div class="forgot-icon-block">
+                <div class="forgot-icon-circle">
+                    <i class="fa-solid fa-lock-open"></i>
+                </div>
+                <h3>Password Recovery</h3>
+                <p class="forgot-subtext">We'll send a recovery link to your registered email address.</p>
+            </div>
+
+            <form id="forgot-form" onsubmit="return handleForgotSubmit(event);">
+                <div class="form-group">
+                    <label for="forgot-email-input">Registered Email Address</label>
+                    <input type="email" id="forgot-email-input" placeholder="admin@nexus.com" required autocomplete="email">
+                </div>
+                <!-- Error block -->
+                <div id="forgot-error-msg" class="auth-error-msg" style="display:none;">
+                    <i class="fa-solid fa-triangle-exclamation"></i> <span></span>
+                </div>
+                <!-- Success block -->
+                <div id="forgot-success-block" class="auth-success-msg" style="display:none;"></div>
+
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top:8px;">
+                    <i class="fa-solid fa-paper-plane"></i> Send Recovery Link
+                </button>
+            </form>
+
+            <div class="auth-forgot-link" style="margin-top:16px;">
+                <button type="button" onclick="backToLogin()" class="link-btn">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Login
+                </button>
+            </div>
+            <div class="auth-footer">
+                <p>Secured via Enterprise Cryptographic Gateway Node</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================
+         DASHBOARD VIEW
+    ====================================================== -->
     <div id="dashboard-view" class="dashboard-wrapper" style="display: none;">
         
         <aside class="sidebar-container" id="sidebar-panel">
@@ -120,6 +1336,7 @@
 
             <main class="panel-content-viewport">
                 
+                <!-- DASHBOARD HOME -->
                 <section id="panel-home" class="app-view-panel-container target-active-panel">
                     <div class="panel-view-title-block">
                         <div>
@@ -192,6 +1409,7 @@
                     </div>
                 </section>
 
+                <!-- CUSTOMERS -->
                 <section id="panel-customers" class="app-view-panel-container" style="display: none;">
                     <div class="panel-view-title-block">
                         <div>
@@ -202,7 +1420,6 @@
                             <i class="fa-solid fa-plus"></i> Add Account Profile
                         </button>
                     </div>
-
                     <div class="data-table-control-interface">
                         <div class="search-bar-wrapper table-search-override">
                             <i class="fa-solid fa-magnifying-glass"></i>
@@ -223,7 +1440,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="data-table-scroll-container">
                         <table class="enterprise-data-table" id="customer-matrix-table">
                             <thead>
@@ -235,12 +1451,12 @@
                                     <th style="text-align: right;">Action Triggers</th>
                                 </tr>
                             </thead>
-                            <tbody id="customer-rows-target">
-                                </tbody>
+                            <tbody id="customer-rows-target"></tbody>
                         </table>
                     </div>
                 </section>
 
+                <!-- EMPLOYEES -->
                 <section id="panel-employees" class="app-view-panel-container" style="display: none;">
                     <div class="panel-view-title-block">
                         <div>
@@ -251,7 +1467,6 @@
                             <i class="fa-solid fa-user-plus"></i> Onboard New Operator
                         </button>
                     </div>
-
                     <div class="data-table-scroll-container">
                         <table class="enterprise-data-table" id="employee-matrix-table">
                             <thead>
@@ -264,12 +1479,12 @@
                                     <th style="text-align: right;">Action Triggers</th>
                                 </tr>
                             </thead>
-                            <tbody id="employee-rows-target">
-                                </tbody>
+                            <tbody id="employee-rows-target"></tbody>
                         </table>
                     </div>
                 </section>
 
+                <!-- TASKS -->
                 <section id="panel-tasks" class="app-view-panel-container" style="display: none;">
                     <div class="panel-view-title-block">
                         <div>
@@ -280,14 +1495,12 @@
                             <i class="fa-solid fa-circle-plus"></i> Launch Operation Ticket
                         </button>
                     </div>
-
-                    <div class="kanban-task-matrix-grid" id="task-cards-target">
-                        </div>
+                    <div class="kanban-task-matrix-grid" id="task-cards-target"></div>
                 </section>
 
+                <!-- CALENDAR -->
                 <section id="panel-calendar" class="app-view-panel-container" style="display: none;">
                     <div class="calendar-split-layout-engine">
-                        
                         <div class="calendar-grid-card-workspace">
                             <div class="calendar-control-action-bar">
                                 <div class="calendar-nav-left">
@@ -299,36 +1512,30 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="calendar-matrix-mesh-wrapper">
                                 <div class="calendar-weekday-header-strip">
                                     <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
                                 </div>
-                                <div class="calendar-days-grid-mesh" id="calendar-days-grid-target">
-                                    </div>
+                                <div class="calendar-days-grid-mesh" id="calendar-days-grid-target"></div>
                             </div>
                         </div>
-
                         <aside class="calendar-telemetry-sidebar">
                             <button class="btn btn-primary btn-block" onclick="openAddMeetingModal()">
                                 <i class="fa-solid fa-calendar-plus"></i> Quick Add Event
                             </button>
-                            
                             <div class="sidebar-agenda-section">
                                 <h3 class="sidebar-agenda-title"><i class="fa-solid fa-clock"></i> Today's Agenda</h3>
-                                <div class="sidebar-agenda-stack" id="calendar-sidebar-meetings-target">
-                                    </div>
+                                <div class="sidebar-agenda-stack" id="calendar-sidebar-meetings-target"></div>
                             </div>
-
                             <div class="sidebar-agenda-section">
                                 <h3 class="sidebar-agenda-title"><i class="fa-solid fa-list-check"></i> Upcoming Operations</h3>
-                                <div class="sidebar-agenda-stack" id="calendar-sidebar-tasks-target">
-                                    </div>
+                                <div class="sidebar-agenda-stack" id="calendar-sidebar-tasks-target"></div>
                             </div>
                         </aside>
                     </div>
                 </section>
 
+                <!-- REPORTS -->
                 <section id="panel-reports" class="app-view-panel-container" style="display: none;">
                     <div class="panel-view-title-block">
                         <div>
@@ -336,7 +1543,6 @@
                             <p>Global routing analysis, deployment metrics, and channel distribution models.</p>
                         </div>
                     </div>
-
                     <div class="telemetry-chart-split-grid">
                         <div class="chart-canvas-card">
                             <div class="chart-header-row">
@@ -359,6 +1565,7 @@
                     </div>
                 </section>
 
+                <!-- SETTINGS -->
                 <section id="panel-settings" class="app-view-panel-container" style="display: none;">
                     <div class="panel-view-title-block">
                         <div>
@@ -366,7 +1573,6 @@
                             <p>Configure local environment parameters, enterprise settings, and UI branding schemas.</p>
                         </div>
                     </div>
-
                     <div class="settings-form-card-wrapper">
                         <form id="settings-configuration-form" onsubmit="saveSystemSettings(); return false;">
                             <div class="form-responsive-layout-grid">
@@ -414,6 +1620,7 @@
                     </div>
                 </section>
 
+                <!-- PROFILE -->
                 <section id="panel-profile" class="app-view-panel-container" style="display: none;">
                     <div class="panel-view-title-block">
                         <div>
@@ -421,7 +1628,6 @@
                             <p>Manage credentials, cryptographic bio context, and validation avatar asset.</p>
                         </div>
                     </div>
-
                     <div class="identity-ledger-split-layout">
                         <div class="identity-profile-avatar-card">
                             <div class="avatar-edit-frame">
@@ -432,7 +1638,6 @@
                                 <input type="text" id="profile-avatar-url-input" onchange="updateProfileAvatarFromInput()" placeholder="https://images.unsplash.com/...">
                             </div>
                         </div>
-
                         <div class="identity-profile-details-card">
                             <form id="identity-ledger-form" onsubmit="saveOperatorIdentityProfile(); return false;">
                                 <div class="form-responsive-layout-grid">
@@ -471,7 +1676,11 @@
                 </div>
             </footer>
 
-        </div> </div> <div id="notification-sliding-panel" class="sliding-notification-panel-tray">
+        </div>
+    </div>
+
+    <!-- NOTIFICATION TRAY -->
+    <div id="notification-sliding-panel" class="sliding-notification-panel-tray">
         <div class="notification-panel-header">
             <h2>Notifications</h2>
             <button class="btn-close-modal" onclick="toggleNotificationPanel()"><i class="fa-solid fa-xmark"></i></button>
@@ -494,11 +1703,14 @@
         </div>
     </div>
 
+    <!-- ======================================================
+         CUSTOMER MODAL — submit button is INSIDE the form
+    ====================================================== -->
     <div id="customer-crud-modal" class="modal-overlay-backdrop-container" style="display: none;">
         <div class="modal-window-surface">
             <div class="modal-header-container">
                 <h3 id="customer-modal-title">Provision New Account Node</h3>
-                <button class="btn-close-modal" onclick="closeCustomerModal()"><i class="fa-solid fa-xmark"></i></button>
+                <button type="button" class="btn-close-modal" onclick="closeCustomerModal()"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form id="customer-crud-form">
                 <input type="hidden" id="customer-editing-id-holder">
@@ -530,17 +1742,20 @@
                 </div>
                 <div class="modal-footer-container">
                     <button type="button" class="btn btn-secondary" onclick="closeCustomerModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Commit Entry</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Commit Entry</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- ======================================================
+         EMPLOYEE MODAL — submit button is INSIDE the form
+    ====================================================== -->
     <div id="employee-crud-modal" class="modal-overlay-backdrop-container" style="display: none;">
         <div class="modal-window-surface">
             <div class="modal-header-container">
                 <h3 id="employee-modal-title">Onboard Operational Specialist</h3>
-                <button class="btn-close-modal" onclick="closeEmployeeModal()"><i class="fa-solid fa-xmark"></i></button>
+                <button type="button" class="btn-close-modal" onclick="closeEmployeeModal()"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form id="employee-crud-form">
                 <input type="hidden" id="employee-editing-id-holder">
@@ -568,17 +1783,20 @@
                 </div>
                 <div class="modal-footer-container">
                     <button type="button" class="btn btn-secondary" onclick="closeEmployeeModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Commit Operator</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i> Commit Operator</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- ======================================================
+         TASK MODAL — submit button is INSIDE the form
+    ====================================================== -->
     <div id="task-crud-modal" class="modal-overlay-backdrop-container" style="display: none;">
         <div class="modal-window-surface">
             <div class="modal-header-container">
                 <h3 id="task-modal-title">Launch Operation Directive Ticket</h3>
-                <button class="btn-close-modal" onclick="closeTaskModal()"><i class="fa-solid fa-xmark"></i></button>
+                <button type="button" class="btn-close-modal" onclick="closeTaskModal()"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form id="task-crud-form">
                 <input type="hidden" id="task-editing-id-holder">
@@ -601,11 +1819,11 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="task-input-progress">Execution Completion Progress Vector (%)</label>
+                        <label for="task-input-progress">Execution Completion Progress (%)</label>
                         <input type="number" id="task-input-progress" min="0" max="100" placeholder="45" required>
                     </div>
                     <div class="form-group">
-                        <label for="task-input-assignee">Assigned Primary Operator Vector</label>
+                        <label for="task-input-assignee">Assigned Primary Operator</label>
                         <input type="text" id="task-input-assignee" placeholder="Sarah Jenkins" required>
                     </div>
                     <div class="form-group">
@@ -615,17 +1833,20 @@
                 </div>
                 <div class="modal-footer-container">
                     <button type="button" class="btn btn-secondary" onclick="closeTaskModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Deploy Ticket</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> Deploy Ticket</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- ======================================================
+         MEETING MODAL — submit button is INSIDE the form
+    ====================================================== -->
     <div id="meeting-crud-modal" class="modal-overlay-backdrop-container" style="display: none;">
         <div class="modal-window-surface">
             <div class="modal-header-container">
                 <h3 id="meeting-modal-title">Schedule Chronos Sync Node</h3>
-                <button class="btn-close-modal" onclick="closeMeetingModal()"><i class="fa-solid fa-xmark"></i></button>
+                <button type="button" class="btn-close-modal" onclick="closeMeetingModal()"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form id="meeting-crud-form">
                 <input type="hidden" id="meeting-editing-id-holder">
@@ -653,13 +1874,736 @@
                 </div>
                 <div class="modal-footer-container">
                     <button type="button" class="btn btn-secondary" onclick="closeMeetingModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Lock Target</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-calendar-check"></i> Lock Target</button>
                 </div>
             </form>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="app.js"></script>
+    <script>
+/**
+ * ==========================================================================
+ * CENTRALIZED APPLICATION STATE DATA MATRIX & HYDRATION LAYER
+ * ==========================================================================
+ */
+
+const APP_STATE = {
+    currentView: 'login-view',
+    currentPanel: 'panel-home',
+    
+    identity: {
+        fullName: "Zarnab Laeeq-ur-Rehman",
+        email: "admin@nexus.com",
+        phone: "+92 (42) 3555-8910",
+        bio: "Responsible for managing enterprise structural databases, overseeing global client onboarding pipelines, optimizing system telemetry routing, and provisioning cryptographic deployment validation gates.",
+        companyName: "NexusCRM Global Networks",
+        companyEmail: "ops@nexus.com",
+        companyPhone: "+1 (555) 019-2831",
+        companyWebsite: "https://nexus-matrix.io",
+        companyAddress: "Suite 404, Tech Logistics Corridor, Layer 1 Engine Hub",
+        timeZone: "Pakistan Standard Time (PKT) - UTC+5",
+        currency: "PKR (Rs) - Pakistani Rupee",
+        language: "English (Global Architecture)"
+    },
+
+    customers: [
+        { id: 1, name: "Acme Analytics Corp", email: "billing@acme.io", segment: "Enterprise SLA", status: "Active" },
+        { id: 2, name: "Synergy Global Logistics", email: "ops@synergy.net", segment: "Mid-Market Growth", status: "Active" },
+        { id: 3, name: "Apex Cryptographic Systems", email: "secops@apex.io", segment: "Enterprise SLA", status: "Under Review" },
+        { id: 4, name: "Vortex Labs Inc", email: "contact@vortex.dev", segment: "Startup Scale", status: "Suspended" }
+    ],
+    employees: [
+        { id: 1, name: "Sarah Jenkins", role: "Lead Cloud Engineer", dept: "Engineering Department", email: "s.jenkins@nexus.com", phone: "+1 (555) 391-4402" },
+        { id: 2, name: "Tariq Mahmood", role: "Database Infrastructure Specialist", dept: "Data Operations", email: "t.mahmood@nexus.com", phone: "+92 (42) 3991-0021" },
+        { id: 3, name: "Elena Rostova", role: "SLA Account Director", dept: "Client Success Unit", email: "e.rostova@nexus.com", phone: "+1 (555) 821-9934" }
+    ],
+    tasks: [
+        { id: 1, title: "Database Optimization Routine", desc: "Execute column indexes optimization across core transaction logs to minimize latency overhead.", priority: "CRITICAL", progress: 65, assignee: "Tariq Mahmood", date: "2026-07-15" },
+        { id: 2, title: "Provision Cryptographic Deployment Gateways", desc: "Deploy automated token authorization gates for staging node routing compliance verification.", priority: "HIGH", progress: 40, assignee: "Sarah Jenkins", date: "2026-07-19" },
+        { id: 3, title: "Execute SLA Client Performance Diagnostics", desc: "Compile throughput metrics audit profiles for Acme Analytics framework verification cycle.", priority: "MEDIUM", progress: 90, assignee: "Elena Rostova", date: "2026-07-12" }
+    ],
+    meetings: [
+        { id: 1, title: "Quarterly Structural Review", date: "2026-07-10", time: "14:00", type: "Secure Video Link" },
+        { id: 2, title: "Acme Onboarding Diagnostics Sync", date: "2026-07-14", time: "10:30", type: "Internal Physical Suite" },
+        { id: 3, title: "Cryptographic Gate Validation Lock", date: "2026-07-19", time: "16:15", type: "Direct Audio Encrypted" }
+    ],
+
+    calendarContext: {
+        activeYear: 2026,
+        activeMonth: 6
+    }
+};
+
+// ============================================================
+// AUTH GATE — credentials fixed as specified
+// ============================================================
+const VALID_CREDENTIALS = {
+    username: "admin@nexus.com",
+    password: "zar346"
+};
+
+// ============================================================
+// BOOT
+// ============================================================
+document.addEventListener("DOMContentLoaded", () => {
+    initializeLocalDataEngine();
+    syncUIVisualRepresentations();
+    bindFormSubmissionEventHandlers();
+    initDashboardCharts();
+    // Always start at login
+    document.getElementById('login-view').style.display = 'flex';
+    document.getElementById('forgot-view').style.display = 'none';
+    document.getElementById('dashboard-view').style.display = 'none';
+});
+
+// ============================================================
+// LOGIN HANDLER — validates credentials before granting access
+// ============================================================
+function handleLogin(e) {
+    if (e) e.preventDefault();
+    const username = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const errorEl = document.getElementById('login-error-msg');
+
+    if (username === VALID_CREDENTIALS.username && password === VALID_CREDENTIALS.password) {
+        errorEl.style.display = 'none';
+        navigateTo('dashboard-view');
+    } else {
+        errorEl.style.display = 'flex';
+        errorEl.innerText = 'Invalid credentials. Please check your username and password.';
+        document.getElementById('login-password').value = '';
+    }
+    return false;
+}
+
+// ============================================================
+// PASSWORD SHOW/HIDE TOGGLE
+// ============================================================
+function togglePasswordVisibility(inputId, btnEl) {
+    const input = document.getElementById(inputId);
+    const icon = btnEl.querySelector('i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+
+// ============================================================
+// FORGOT PASSWORD FLOW
+// ============================================================
+function showForgotView() {
+    document.getElementById('login-view').style.display = 'none';
+    document.getElementById('forgot-view').style.display = 'flex';
+    document.getElementById('dashboard-view').style.display = 'none';
+    const errEl = document.getElementById('forgot-error-msg');
+    const sucEl = document.getElementById('forgot-success-block');
+    if (errEl) errEl.style.display = 'none';
+    if (sucEl) sucEl.style.display = 'none';
+    const inp = document.getElementById('forgot-email-input');
+    if (inp) inp.value = '';
+}
+
+function backToLogin() {
+    document.getElementById('forgot-view').style.display = 'none';
+    document.getElementById('login-view').style.display = 'flex';
+}
+
+function handleForgotSubmit(e) {
+    if (e) e.preventDefault();
+    const email = document.getElementById('forgot-email-input').value.trim();
+    const errorEl = document.getElementById('forgot-error-msg');
+    const successEl = document.getElementById('forgot-success-block');
+
+    if (email === VALID_CREDENTIALS.username) {
+        if (errorEl) errorEl.style.display = 'none';
+        if (successEl) {
+            successEl.style.display = 'flex';
+            successEl.innerHTML = '<i class="fa-solid fa-circle-check"></i>&nbsp; Recovery instructions sent to <strong>' + email + '</strong>. Check your inbox.';
+        }
+    } else {
+        if (successEl) successEl.style.display = 'none';
+        if (errorEl) {
+            errorEl.style.display = 'flex';
+            errorEl.innerText = 'No account found with that email address.';
+        }
+    }
+    return false;
+}
+
+// ============================================================
+// ROUTING
+// ============================================================
+function initializeLocalDataEngine() {
+    if (!localStorage.getItem('NEXUS_CRM_STATE_ENG_V5')) {
+        saveStateToLocalStorage();
+    } else {
+        try {
+            const parsed = JSON.parse(localStorage.getItem('NEXUS_CRM_STATE_ENG_V5'));
+            APP_STATE.identity  = parsed.identity  || APP_STATE.identity;
+            APP_STATE.customers = parsed.customers || APP_STATE.customers;
+            APP_STATE.employees = parsed.employees || APP_STATE.employees;
+            APP_STATE.tasks     = parsed.tasks     || APP_STATE.tasks;
+            APP_STATE.meetings  = parsed.meetings  || APP_STATE.meetings;
+        } catch (e) {
+            console.error("Local schema corrupted, falling back to defaults.", e);
+        }
+    }
+    const now = new Date();
+    APP_STATE.calendarContext.activeYear  = now.getFullYear();
+    APP_STATE.calendarContext.activeMonth = now.getMonth();
+}
+
+function saveStateToLocalStorage() {
+    localStorage.setItem('NEXUS_CRM_STATE_ENG_V5', JSON.stringify({
+        identity:  APP_STATE.identity,
+        customers: APP_STATE.customers,
+        employees: APP_STATE.employees,
+        tasks:     APP_STATE.tasks,
+        meetings:  APP_STATE.meetings
+    }));
+}
+
+function navigateTo(viewId) {
+    APP_STATE.currentView = viewId;
+    document.getElementById('login-view').style.display  = 'none';
+    document.getElementById('forgot-view').style.display = 'none';
+    document.getElementById('dashboard-view').style.display = 'none';
+
+    if (viewId === 'login-view') {
+        document.getElementById('login-view').style.display = 'flex';
+    } else if (viewId === 'dashboard-view') {
+        document.getElementById('dashboard-view').style.display = 'flex';
+        switchPanel(APP_STATE.currentPanel);
+    }
+}
+
+function switchPanel(panelId) {
+    APP_STATE.currentPanel = panelId;
+    document.querySelectorAll('.app-view-panel-container').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.nav-item-btn').forEach(btn => btn.classList.remove('active'));
+
+    const activePanel = document.getElementById(panelId);
+    if (activePanel) activePanel.style.display = 'block';
+
+    const matchingBtn = document.querySelector(`.nav-item-btn[data-panel="${panelId}"]`);
+    if (matchingBtn) matchingBtn.classList.add('active');
+
+    document.getElementById('sidebar-panel').classList.remove('mobile-visible');
+    renderTargetPanelModules(panelId);
+}
+
+function toggleMobileSidebar() {
+    document.getElementById('sidebar-panel').classList.toggle('mobile-visible');
+}
+
+function toggleNotificationPanel() {
+    document.getElementById('notification-sliding-panel').classList.toggle('tray-active-state');
+}
+
+// ============================================================
+// RENDER ENGINE
+// ============================================================
+function renderTargetPanelModules(panelId) {
+    syncMetricsSummaryCounters();
+    switch (panelId) {
+        case 'panel-customers': renderCustomerDatabaseMatrix(); break;
+        case 'panel-employees': renderEmployeeDatabaseMatrix(); break;
+        case 'panel-tasks':     renderTaskOperationsWorkspace(); break;
+        case 'panel-calendar':  renderChronosCalendarMeshGrid(); break;
+        case 'panel-settings':  hydrateSettingsFormValues(); break;
+        case 'panel-profile':   hydrateIdentityLedgerFormValues(); break;
+    }
+}
+
+function syncMetricsSummaryCounters() {
+    document.getElementById('stat-customer-count').innerText = APP_STATE.customers.length;
+    document.getElementById('stat-employee-count').innerText = APP_STATE.employees.length;
+    document.getElementById('stat-task-count').innerText = APP_STATE.tasks.filter(t => t.progress < 100).length;
+    document.getElementById('stat-meeting-count').innerText = APP_STATE.meetings.length;
+}
+
+function syncUIVisualRepresentations() {
+    document.getElementById('sidebar-user-name').innerText = APP_STATE.identity.fullName;
+    document.getElementById('navbar-username-lbl').innerText = APP_STATE.identity.fullName.split(' ')[0] + '.';
+    const storedAvatar = localStorage.getItem('NEXUS_AVATAR_URI');
+    if (storedAvatar) {
+        document.getElementById('sidebar-avatar').src = storedAvatar;
+        document.getElementById('navbar-avatar').src = storedAvatar;
+        document.getElementById('profile-avatar-display').src = storedAvatar;
+        document.getElementById('profile-avatar-url-input').value = storedAvatar;
+    }
+}
+
+// ============================================================
+// CUSTOMERS
+// ============================================================
+function renderCustomerDatabaseMatrix() {
+    const target = document.getElementById('customer-rows-target');
+    if (!target) return;
+    if (APP_STATE.customers.length === 0) {
+        target.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:40px;">No operational client entries localized inside cluster.</td></tr>`;
+        return;
+    }
+    target.innerHTML = APP_STATE.customers.map(cust => {
+        let badgeType = 'b-active';
+        if (cust.status === 'Suspended') badgeType = 'b-suspended';
+        if (cust.status === 'Under Review') badgeType = 'b-review';
+        const pseudoSeed = encodeURIComponent(cust.name);
+        return `
+            <tr>
+                <td>
+                    <div class="table-identity-flex-block">
+                        <img class="table-avatar-asset" src="https://api.dicebear.com/7.x/initials/svg?seed=${pseudoSeed}&backgroundColor=9b4d5a,23181a" alt="Corp Entity">
+                        <div class="table-identity-text"><h5>${cust.name}</h5><p>ID: #NX-00${cust.id}</p></div>
+                    </div>
+                </td>
+                <td><span style="font-family:monospace;font-size:13px;">${cust.email}</span></td>
+                <td><span style="font-weight:600;font-size:13px;color:var(--text-secondary);">${cust.segment}</span></td>
+                <td><span class="sys-badge ${badgeType}">${cust.status}</span></td>
+                <td>
+                    <div class="table-action-button-group">
+                        <button class="action-trigger-mini-btn" onclick="openEditCustomerModal(${cust.id})" title="Modify"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button class="action-trigger-mini-btn b-del" onclick="deleteCustomerRecord(${cust.id})" title="Delete"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                </td>
+            </tr>`;
+    }).join('');
+}
+
+function filterCustomerTable() {
+    const query = document.getElementById('customer-search-input').value.toLowerCase();
+    const segmentFilter = document.getElementById('customer-segment-filter').value;
+    const statusFilter  = document.getElementById('customer-status-filter').value;
+    const rows = document.querySelectorAll('#customer-rows-target tr');
+    APP_STATE.customers.forEach((cust, index) => {
+        const row = rows[index];
+        if (!row) return;
+        const matchesQuery   = cust.name.toLowerCase().includes(query) || cust.email.toLowerCase().includes(query);
+        const matchesSegment = segmentFilter === "" || cust.segment === segmentFilter;
+        const matchesStatus  = statusFilter  === "" || cust.status  === statusFilter;
+        row.style.display = (matchesQuery && matchesSegment && matchesStatus) ? '' : 'none';
+    });
+}
+
+// ============================================================
+// EMPLOYEES
+// ============================================================
+function renderEmployeeDatabaseMatrix() {
+    const target = document.getElementById('employee-rows-target');
+    if (!target) return;
+    if (APP_STATE.employees.length === 0) {
+        target.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:40px;">No operational operators authenticated inside index.</td></tr>`;
+        return;
+    }
+    target.innerHTML = APP_STATE.employees.map(emp => {
+        const pseudoSeed = encodeURIComponent(emp.name);
+        return `
+            <tr>
+                <td>
+                    <div class="table-identity-flex-block">
+                        <img class="table-avatar-asset" src="https://api.dicebear.com/7.x/avataaars/svg?seed=${pseudoSeed}" alt="Operator Avatar">
+                        <div class="table-identity-text"><h5>${emp.name}</h5><p>ID: #OP-${100 + emp.id}</p></div>
+                    </div>
+                </td>
+                <td><span style="font-weight:500;">${emp.role}</span></td>
+                <td><span class="sys-badge p-medium" style="text-transform:none;">${emp.dept}</span></td>
+                <td><span style="font-family:monospace;font-size:13px;">${emp.email}</span></td>
+                <td><span style="font-size:13px;color:var(--text-secondary);">${emp.phone || 'N/A'}</span></td>
+                <td>
+                    <div class="table-action-button-group">
+                        <button class="action-trigger-mini-btn" onclick="openEditEmployeeModal(${emp.id})"><i class="fa-solid fa-user-pen"></i></button>
+                        <button class="action-trigger-mini-btn b-del" onclick="deleteEmployeeRecord(${emp.id})"><i class="fa-solid fa-user-minus"></i></button>
+                    </div>
+                </td>
+            </tr>`;
+    }).join('');
+}
+
+// ============================================================
+// TASKS
+// ============================================================
+function renderTaskOperationsWorkspace() {
+    const target = document.getElementById('task-cards-target');
+    if (!target) return;
+    if (APP_STATE.tasks.length === 0) {
+        target.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px;background:#fff;border-radius:var(--radius-lg);border:1px dashed var(--border-color);color:var(--text-muted);">No task execution pipelines current mapped in system state matrix.</div>`;
+        return;
+    }
+    target.innerHTML = APP_STATE.tasks.map(task => {
+        let pClass = 'p-low';
+        if (task.priority === 'CRITICAL') pClass = 'p-critical';
+        if (task.priority === 'HIGH')     pClass = 'p-high';
+        if (task.priority === 'MEDIUM')   pClass = 'p-medium';
+        const pseudoSeed = encodeURIComponent(task.assignee);
+        return `
+            <div class="premium-task-node-card">
+                <div class="task-card-top-row">
+                    <h4 class="task-card-title-string">${task.title}</h4>
+                    <span class="sys-badge ${pClass}">${task.priority}</span>
+                </div>
+                <p class="task-card-body-description">${task.desc}</p>
+                <div class="task-progress-gauge-box">
+                    <div class="task-progress-gauge-labels">
+                        <span>Execution Metric</span><span>${task.progress}%</span>
+                    </div>
+                    <div class="task-progress-bar-track">
+                        <div class="task-progress-bar-fill-index" style="width:${task.progress}%;"></div>
+                    </div>
+                </div>
+                <div class="task-card-bottom-row">
+                    <div class="table-identity-flex-block">
+                        <img class="table-avatar-asset" style="width:28px;height:28px;" src="https://api.dicebear.com/7.x/avataaars/svg?seed=${pseudoSeed}" alt="Assignee">
+                        <span style="font-size:12.5px;font-weight:600;color:var(--text-secondary);">${task.assignee}</span>
+                    </div>
+                    <span class="task-card-due-tag"><i class="fa-solid fa-calendar-day"></i> ${task.date}</span>
+                </div>
+                <div class="table-action-button-group" style="border-top:1px solid var(--border-light);padding-top:10px;">
+                    <button class="action-trigger-mini-btn" onclick="openEditTaskModal(${task.id})"><i class="fa-solid fa-sliders"></i></button>
+                    <button class="action-trigger-mini-btn b-del" onclick="deleteTaskRecord(${task.id})"><i class="fa-solid fa-circle-minus"></i></button>
+                </div>
+            </div>`;
+    }).join('');
+}
+
+// ============================================================
+// CALENDAR
+// ============================================================
+function renderChronosCalendarMeshGrid() {
+    const target = document.getElementById('calendar-days-grid-target');
+    const label  = document.getElementById('calendar-month-year-label');
+    if (!target) return;
+    const year  = APP_STATE.calendarContext.activeYear;
+    const month = APP_STATE.calendarContext.activeMonth;
+    const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    label.innerText = `${monthNames[month]} ${year}`;
+    const firstDayIndex       = new Date(year, month, 1).getDay();
+    const totalDaysInMonth    = new Date(year, month + 1, 0).getDate();
+    const totalDaysInPrevMonth = new Date(year, month, 0).getDate();
+    let htmlBuffer = "";
+    const realToday = new Date();
+    for (let i = firstDayIndex; i > 0; i--) {
+        htmlBuffer += `<div class="calendar-day-cell-node muted-day-span"><span class="day-number-lbl">${totalDaysInPrevMonth - i + 1}</span></div>`;
+    }
+    for (let day = 1; day <= totalDaysInMonth; day++) {
+        const iso = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        const isToday = realToday.getFullYear()===year && realToday.getMonth()===month && realToday.getDate()===day;
+        const cellClass = isToday ? "calendar-day-cell-node current-runtime-day" : "calendar-day-cell-node";
+        let indicators = "";
+        APP_STATE.meetings.filter(m => m.date===iso).forEach(m => {
+            indicators += `<span class="calendar-micro-indicator-tag c-meet" title="${m.title} [${m.time}]">${m.title}</span>`;
+        });
+        APP_STATE.tasks.filter(t => t.date===iso).forEach(t => {
+            indicators += `<span class="calendar-micro-indicator-tag c-task" title="TASK: ${t.title}">${t.title}</span>`;
+        });
+        htmlBuffer += `<div class="${cellClass}"><span class="day-number-lbl">${day}</span><div class="cell-events-stack-container">${indicators}</div></div>`;
+    }
+    const remaining = 42 - (firstDayIndex + totalDaysInMonth);
+    for (let j = 1; j <= remaining; j++) {
+        htmlBuffer += `<div class="calendar-day-cell-node muted-day-span"><span class="day-number-lbl">${j}</span></div>`;
+    }
+    target.innerHTML = htmlBuffer;
+    renderCalendarTelemetrySidebarAgenda();
+}
+
+function shiftCalendarMonth(direction) {
+    APP_STATE.calendarContext.activeMonth += direction;
+    if (APP_STATE.calendarContext.activeMonth > 11) { APP_STATE.calendarContext.activeMonth = 0; APP_STATE.calendarContext.activeYear++; }
+    else if (APP_STATE.calendarContext.activeMonth < 0) { APP_STATE.calendarContext.activeMonth = 11; APP_STATE.calendarContext.activeYear--; }
+    renderChronosCalendarMeshGrid();
+}
+
+function resetCalendarToCurrent() {
+    const now = new Date();
+    APP_STATE.calendarContext.activeYear  = now.getFullYear();
+    APP_STATE.calendarContext.activeMonth = now.getMonth();
+    renderChronosCalendarMeshGrid();
+}
+
+function renderCalendarTelemetrySidebarAgenda() {
+    const meetTarget = document.getElementById('calendar-sidebar-meetings-target');
+    const taskTarget = document.getElementById('calendar-sidebar-tasks-target');
+    if (meetTarget) {
+        if (APP_STATE.meetings.length === 0) {
+            meetTarget.innerHTML = `<p style="font-size:12.5px;color:var(--text-muted);text-align:center;padding:10px;">Clear radar stack.</p>`;
+        } else {
+            meetTarget.innerHTML = APP_STATE.meetings.slice(0,3).map(meet => `
+                <div class="agenda-summary-item-card">
+                    <div class="agenda-summary-card-head">
+                        <h4>${meet.title}</h4>
+                        <button class="btn-icon-only" style="width:20px;height:20px;font-size:11px;" onclick="deleteMeetingRecord(${meet.id})"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                    <div class="agenda-summary-card-meta">
+                        <span><i class="fa-solid fa-clock"></i> ${meet.time}</span>
+                        <span><i class="fa-solid fa-network-wired"></i> ${meet.type}</span>
+                    </div>
+                    <div style="font-size:11px;font-weight:700;color:var(--text-muted);margin-top:2px;"><i class="fa-solid fa-calendar"></i> Target: ${meet.date}</div>
+                </div>`).join('');
+        }
+    }
+    if (taskTarget) {
+        const hp = APP_STATE.tasks.filter(t => t.priority==='CRITICAL'||t.priority==='HIGH');
+        if (hp.length === 0) {
+            taskTarget.innerHTML = `<p style="font-size:12.5px;color:var(--text-muted);text-align:center;padding:10px;">No high threat operations.</p>`;
+        } else {
+            taskTarget.innerHTML = hp.slice(0,2).map(task => `
+                <div class="agenda-summary-item-card" style="border-left:3px solid #b5533c;">
+                    <div class="agenda-summary-card-head"><h4>${task.title}</h4></div>
+                    <div class="agenda-summary-card-meta">
+                        <span style="font-weight:700;color:#b5533c;">[${task.priority}]</span>
+                        <span><i class="fa-solid fa-user-ninja"></i> ${task.assignee}</span>
+                    </div>
+                </div>`).join('');
+        }
+    }
+}
+
+// ============================================================
+// SETTINGS & PROFILE FORMS
+// ============================================================
+function hydrateSettingsFormValues() {
+    document.getElementById('set-company-name').value    = APP_STATE.identity.companyName;
+    document.getElementById('set-company-email').value   = APP_STATE.identity.companyEmail;
+    document.getElementById('set-company-phone').value   = APP_STATE.identity.companyPhone;
+    document.getElementById('set-company-website').value = APP_STATE.identity.companyWebsite;
+    document.getElementById('set-company-address').value = APP_STATE.identity.companyAddress;
+    document.getElementById('set-system-timezone').value = APP_STATE.identity.timeZone;
+    document.getElementById('set-system-currency').value = APP_STATE.identity.currency;
+}
+
+function saveSystemSettings() {
+    APP_STATE.identity.companyName    = document.getElementById('set-company-name').value;
+    APP_STATE.identity.companyEmail   = document.getElementById('set-company-email').value;
+    APP_STATE.identity.companyPhone   = document.getElementById('set-company-phone').value;
+    APP_STATE.identity.companyWebsite = document.getElementById('set-company-website').value;
+    APP_STATE.identity.companyAddress = document.getElementById('set-company-address').value;
+    APP_STATE.identity.timeZone       = document.getElementById('set-system-timezone').value;
+    APP_STATE.identity.currency       = document.getElementById('set-system-currency').value;
+    saveStateToLocalStorage();
+    alert("System operational parameters updated and saved to secure browser context matrix.");
+}
+
+function hydrateIdentityLedgerFormValues() {
+    document.getElementById('prof-full-name').value       = APP_STATE.identity.fullName;
+    document.getElementById('prof-email-address').value   = APP_STATE.identity.email;
+    document.getElementById('prof-phone-line').value      = APP_STATE.identity.phone;
+    document.getElementById('prof-biography-block').value = APP_STATE.identity.bio;
+}
+
+function saveOperatorIdentityProfile() {
+    APP_STATE.identity.fullName = document.getElementById('prof-full-name').value;
+    APP_STATE.identity.email    = document.getElementById('prof-email-address').value;
+    APP_STATE.identity.phone    = document.getElementById('prof-phone-line').value;
+    APP_STATE.identity.bio      = document.getElementById('prof-biography-block').value;
+    saveStateToLocalStorage();
+    syncUIVisualRepresentations();
+    alert("Cryptographic identification bound securely. Identity signature saved absolute.");
+}
+
+function updateProfileAvatarFromInput() {
+    const url = document.getElementById('profile-avatar-url-input').value;
+    if (url) { localStorage.setItem('NEXUS_AVATAR_URI', url); syncUIVisualRepresentations(); }
+}
+
+// ============================================================
+// CRUD FORM HANDLERS
+// ============================================================
+function bindFormSubmissionEventHandlers() {
+    document.getElementById('customer-crud-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const editId  = document.getElementById('customer-editing-id-holder').value;
+        const name    = document.getElementById('cust-input-name').value;
+        const email   = document.getElementById('cust-input-email').value;
+        const segment = document.getElementById('cust-input-segment').value;
+        const status  = document.getElementById('cust-input-status').value;
+        if (editId) {
+            const idx = APP_STATE.customers.findIndex(c => c.id == editId);
+            if (idx !== -1) APP_STATE.customers[idx] = { id: parseInt(editId), name, email, segment, status };
+        } else {
+            const nextId = APP_STATE.customers.length > 0 ? Math.max(...APP_STATE.customers.map(c => c.id)) + 1 : 1;
+            APP_STATE.customers.push({ id: nextId, name, email, segment, status });
+        }
+        saveStateToLocalStorage(); closeCustomerModal(); renderCustomerDatabaseMatrix(); syncMetricsSummaryCounters();
+    });
+
+    document.getElementById('employee-crud-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const editId = document.getElementById('employee-editing-id-holder').value;
+        const name   = document.getElementById('emp-input-name').value;
+        const role   = document.getElementById('emp-input-role').value;
+        const dept   = document.getElementById('emp-input-dept').value;
+        const email  = document.getElementById('emp-input-email').value;
+        const phone  = document.getElementById('emp-input-phone').value;
+        if (editId) {
+            const idx = APP_STATE.employees.findIndex(em => em.id == editId);
+            if (idx !== -1) APP_STATE.employees[idx] = { id: parseInt(editId), name, role, dept, email, phone };
+        } else {
+            const nextId = APP_STATE.employees.length > 0 ? Math.max(...APP_STATE.employees.map(e => e.id)) + 1 : 1;
+            APP_STATE.employees.push({ id: nextId, name, role, dept, email, phone });
+        }
+        saveStateToLocalStorage(); closeEmployeeModal(); renderEmployeeDatabaseMatrix(); syncMetricsSummaryCounters();
+    });
+
+    document.getElementById('task-crud-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const editId   = document.getElementById('task-editing-id-holder').value;
+        const title    = document.getElementById('task-input-title').value;
+        const desc     = document.getElementById('task-input-desc').value;
+        const priority = document.getElementById('task-input-priority').value;
+        const progress = parseInt(document.getElementById('task-input-progress').value);
+        const assignee = document.getElementById('task-input-assignee').value;
+        const date     = document.getElementById('task-input-date').value;
+        if (editId) {
+            const idx = APP_STATE.tasks.findIndex(t => t.id == editId);
+            if (idx !== -1) APP_STATE.tasks[idx] = { id: parseInt(editId), title, desc, priority, progress, assignee, date };
+        } else {
+            const nextId = APP_STATE.tasks.length > 0 ? Math.max(...APP_STATE.tasks.map(t => t.id)) + 1 : 1;
+            APP_STATE.tasks.push({ id: nextId, title, desc, priority, progress, assignee, date });
+        }
+        saveStateToLocalStorage(); closeTaskModal(); renderTaskOperationsWorkspace(); syncMetricsSummaryCounters();
+    });
+
+    document.getElementById('meeting-crud-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const title = document.getElementById('meet-input-title').value;
+        const date  = document.getElementById('meet-input-date').value;
+        const time  = document.getElementById('meet-input-time').value;
+        const type  = document.getElementById('meet-input-type').value;
+        const nextId = APP_STATE.meetings.length > 0 ? Math.max(...APP_STATE.meetings.map(m => m.id)) + 1 : 1;
+        APP_STATE.meetings.push({ id: nextId, title, date, time, type });
+        saveStateToLocalStorage(); closeMeetingModal(); renderChronosCalendarMeshGrid(); syncMetricsSummaryCounters();
+    });
+}
+
+// ============================================================
+// MODAL OPEN/CLOSE
+// ============================================================
+function openAddCustomerModal() {
+    document.getElementById('customer-crud-form').reset();
+    document.getElementById('customer-editing-id-holder').value = "";
+    document.getElementById('customer-modal-title').innerText = "Provision New Account Node";
+    document.getElementById('customer-crud-modal').style.display = 'flex';
+}
+function openEditCustomerModal(id) {
+    const cust = APP_STATE.customers.find(c => c.id == id); if (!cust) return;
+    document.getElementById('customer-editing-id-holder').value = cust.id;
+    document.getElementById('cust-input-name').value    = cust.name;
+    document.getElementById('cust-input-email').value   = cust.email;
+    document.getElementById('cust-input-segment').value = cust.segment;
+    document.getElementById('cust-input-status').value  = cust.status;
+    document.getElementById('customer-modal-title').innerText = `Modify Client Node Profile: #NX-00${cust.id}`;
+    document.getElementById('customer-crud-modal').style.display = 'flex';
+}
+function closeCustomerModal() { document.getElementById('customer-crud-modal').style.display = 'none'; }
+function deleteCustomerRecord(id) {
+    if (confirm("Purge client profile permanently from telemetry context?")) {
+        APP_STATE.customers = APP_STATE.customers.filter(c => c.id != id);
+        saveStateToLocalStorage(); renderCustomerDatabaseMatrix(); syncMetricsSummaryCounters();
+    }
+}
+
+function openAddEmployeeModal() {
+    document.getElementById('employee-crud-form').reset();
+    document.getElementById('employee-editing-id-holder').value = "";
+    document.getElementById('employee-modal-title').innerText = "Onboard Operational Specialist";
+    document.getElementById('employee-crud-modal').style.display = 'flex';
+}
+function openEditEmployeeModal(id) {
+    const emp = APP_STATE.employees.find(e => e.id == id); if (!emp) return;
+    document.getElementById('employee-editing-id-holder').value = emp.id;
+    document.getElementById('emp-input-name').value  = emp.name;
+    document.getElementById('emp-input-role').value  = emp.role;
+    document.getElementById('emp-input-dept').value  = emp.dept;
+    document.getElementById('emp-input-email').value = emp.email;
+    document.getElementById('emp-input-phone').value = emp.phone || '';
+    document.getElementById('employee-modal-title').innerText = `Update Operator System Config: #OP-${100 + emp.id}`;
+    document.getElementById('employee-crud-modal').style.display = 'flex';
+}
+function closeEmployeeModal() { document.getElementById('employee-crud-modal').style.display = 'none'; }
+function deleteEmployeeRecord(id) {
+    if (confirm("Revoke access permissions and terminate operator context registry profile?")) {
+        APP_STATE.employees = APP_STATE.employees.filter(e => e.id != id);
+        saveStateToLocalStorage(); renderEmployeeDatabaseMatrix(); syncMetricsSummaryCounters();
+    }
+}
+
+function openAddTaskModal() {
+    document.getElementById('task-crud-form').reset();
+    document.getElementById('task-editing-id-holder').value = "";
+    document.getElementById('task-modal-title').innerText = "Launch Operation Directive Ticket";
+    document.getElementById('task-crud-modal').style.display = 'flex';
+}
+function openEditTaskModal(id) {
+    const task = APP_STATE.tasks.find(t => t.id == id); if (!task) return;
+    document.getElementById('task-editing-id-holder').value   = task.id;
+    document.getElementById('task-input-title').value         = task.title;
+    document.getElementById('task-input-desc').value          = task.desc;
+    document.getElementById('task-input-priority').value      = task.priority;
+    document.getElementById('task-input-progress').value      = task.progress;
+    document.getElementById('task-input-assignee').value      = task.assignee;
+    document.getElementById('task-input-date').value          = task.date;
+    document.getElementById('task-modal-title').innerText = `Reconfigure Operation Directive Parameters`;
+    document.getElementById('task-crud-modal').style.display = 'flex';
+}
+function closeTaskModal() { document.getElementById('task-crud-modal').style.display = 'none'; }
+function deleteTaskRecord(id) {
+    if (confirm("Terminate execution route ticket lifecycle sequence?")) {
+        APP_STATE.tasks = APP_STATE.tasks.filter(t => t.id != id);
+        saveStateToLocalStorage(); renderTaskOperationsWorkspace(); syncMetricsSummaryCounters();
+    }
+}
+
+function openAddMeetingModal() {
+    document.getElementById('meeting-crud-form').reset();
+    document.getElementById('meeting-editing-id-holder').value = "";
+    document.getElementById('meeting-crud-modal').style.display = 'flex';
+}
+function closeMeetingModal() { document.getElementById('meeting-crud-modal').style.display = 'none'; }
+function deleteMeetingRecord(id) {
+    if (confirm("De-synchronize scheduled calendar target chronos node?")) {
+        APP_STATE.meetings = APP_STATE.meetings.filter(m => m.id != id);
+        saveStateToLocalStorage(); renderChronosCalendarMeshGrid(); syncMetricsSummaryCounters();
+    }
+}
+
+// ============================================================
+// CHARTS
+// ============================================================
+function initDashboardCharts() {
+    const revCtx = document.getElementById('revenueChart');
+    if (revCtx) {
+        new Chart(revCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan','Feb','Mar','Apr','May','Jun'],
+                datasets: [{ label: 'Revenue Index ($)', data: [12000,19000,32000,5000,24000,48250], borderColor: '#9b4d5a', backgroundColor: 'rgba(155,77,90,0.04)', tension: 0.35, fill: true, borderWidth: 3, pointBackgroundColor: '#9b4d5a' }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#f3eae6' }, ticks: { color: '#8c8082' } }, x: { grid: { display: false }, ticks: { color: '#8c8082' } } } }
+        });
+    }
+    const reportCtx = document.getElementById('reportSalesChart');
+    if (reportCtx) {
+        new Chart(reportCtx, {
+            type: 'bar',
+            data: { labels: ['Q1','Q2','Q3','Q4'], datasets: [{ label: 'Velocity Matrix', data: [45,67,89,124], backgroundColor: '#74526c', borderRadius: 6 }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+    }
+    const funnelCtx = document.getElementById('reportFunnelChart');
+    if (funnelCtx) {
+        new Chart(funnelCtx, {
+            type: 'doughnut',
+            data: { labels: ['Inbound API','Organic Sales Routing','Partner Channels'], datasets: [{ data: [55,30,15], backgroundColor: ['#9b4d5a','#4f7396','#b8694a'], borderWidth: 0 }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, padding: 20 } } } }
+        });
+    }
+}
+
+</script>
 </body>
 </html>
