@@ -26,7 +26,7 @@ An operational enterprise Customer Relationship Management (CRM) command matrix 
 
 To pass through the initialization security validation layer:
 * **Username / Email**: `admin@nexus.com`
-* **Default Passcode**: `ZarnabPass2026!`
+* **Default Passcode**: `zar346`
 
 ## Target Workspaces and Controls
 
